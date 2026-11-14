@@ -69,6 +69,13 @@ export const routes: Routes = [
       .then(m => m.PokerPage),
   },
   {
+  path: 'games/baccarat',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./features/games/baccarat/baccarat.page')
+      .then(m => m.BaccaratPage),
+  },
+  {
     path: '',
     redirectTo: 'auth/login',
     pathMatch: 'full',

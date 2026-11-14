@@ -76,7 +76,8 @@
                   game.id === 'roulette' ||
                   game.id === 'slots' ||
                   game.id === 'blackjack' ||
-                  game.id === 'poker'
+                  game.id === 'poker' ||
+                  game.id === 'baccarat'
                 ) {
                   <ion-chip color="success">Disponible</ion-chip>
                 } @else {
@@ -133,6 +134,15 @@
                     type="button"
                     class="play-link"
                     (click)="openPoker()"
+                  >
+                    Jugar ahora →
+                  </button>
+
+                } @else if (game.id === 'baccarat') {
+                  <button
+                    type="button"
+                    class="play-link"
+                    (click)="openBaccarat()"
                   >
                     Jugar ahora →
                   </button>

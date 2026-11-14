@@ -61,6 +61,10 @@ export class DashboardPage {
     void this.router.navigateByUrl('/games/blackjack');
   }
 
+  public openBaccarat(): void {
+    void this.router.navigateByUrl('/games/baccarat');
+  }
+  
   public openPoker(): void {
     void this.router.navigateByUrl('/games/poker');
   }

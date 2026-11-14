@@ -60,20 +60,54 @@ export class StatisticsService {
     );
   }
 
+  
   public recordResult(
     userId: string,
     gameId: GameId,
     outcome: GameOutcome,
     details?: string,
-  ): void {
+    roundId?: string,
+  ): boolean {
+    if (!userId.trim()) {
+      return false;
+    }
+
+    const validGame = GAMES.some(
+      game => game.id === gameId,
+    );
+
+    const validOutcomes: GameOutcome[] = [
+      'win',
+      'loss',
+      'draw',
+    ];
+
+    if (!validGame || !validOutcomes.includes(outcome)) {
+      return false;
+    }
+
+    const effectiveRoundId =
+      roundId?.trim() || crypto.randomUUID();
+
+    const history = this.getHistory(userId);
+
+    // Evitar registrar dos veces la misma partida.
+    const alreadyRegistered = history.some(
+      entry => entry.roundId === effectiveRoundId,
+    );
+
+    if (alreadyRegistered) {
+      return false;
+    }
+
     const statistics = this.getStatistics(userId);
 
     const gameStatistics = statistics.find(
-      (item) => item.gameId === gameId,
+      item => item.gameId === gameId,
     );
 
     if (!gameStatistics) {
-      return;
+      return false;
     }
 
     gameStatistics.gamesPlayed++;
@@ -92,15 +126,9 @@ export class StatisticsService {
         break;
     }
 
-    this.storageService.set(
-      this.getStatisticsKey(userId),
-      statistics,
-    );
-
-    const history = this.getHistory(userId);
-
     const newEntry: GameHistoryEntry = {
       id: crypto.randomUUID(),
+      roundId: effectiveRoundId,
       gameId,
       outcome,
       playedAt: new Date().toISOString(),
@@ -110,10 +138,18 @@ export class StatisticsService {
     history.unshift(newEntry);
 
     this.storageService.set(
+      this.getStatisticsKey(userId),
+      statistics,
+    );
+
+    this.storageService.set(
       this.getHistoryKey(userId),
       history.slice(0, 100),
     );
+
+    return true;
   }
+
 
   public getTotalGames(userId: string): number {
     return this.getStatistics(userId).reduce(
