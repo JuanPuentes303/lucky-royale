@@ -39,6 +39,7 @@ export class BaccaratPage {
   private readonly statisticsService = inject(StatisticsService);
   private readonly router = inject(Router);
   private readonly changeDetector = inject(ChangeDetectorRef);
+  private currentRoundId: string | null = null;
 
   private deck: BaccaratCard[] = [];
 
@@ -193,6 +194,7 @@ export class BaccaratPage {
       return;
     }
 
+    this.currentRoundId = crypto.randomUUID();
     this.isPlaying = true;
     this.hasPlayed = false;
 
@@ -313,6 +315,7 @@ export class BaccaratPage {
         'baccarat',
         this.outcome,
         `Jugador: ${this.playerScore}. Banca: ${this.bankerScore}. Resultado: ${this.resultLabel}. Predicción: ${this.predictionLabel}.`,
+        this.currentRoundId ?? undefined,
       );
     }
   }
@@ -322,6 +325,7 @@ export class BaccaratPage {
       return;
     }
 
+    this.currentRoundId = null;
     this.playerCards = [];
     this.bankerCards = [];
 

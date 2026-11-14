@@ -40,6 +40,7 @@ export class RoulettePage {
   private readonly statisticsService = inject(StatisticsService);
   private readonly router = inject(Router);
   private readonly changeDetector = inject(ChangeDetectorRef);
+  private currentRoundId: string | null = null;
 
   private readonly wheelSequence = [
     0, 32, 15, 19, 4, 21, 2, 25, 17, 34,
@@ -174,6 +175,7 @@ export class RoulettePage {
         return;
     }
 
+    this.currentRoundId = crypto.randomUUID();
     this.isSpinning = true;
     this.hasPlayed = false;
     this.outcome = null;
@@ -233,12 +235,13 @@ export class RoulettePage {
         const user = this.authService.currentUser;
 
         if (user) {
-        this.statisticsService.recordResult(
+          this.statisticsService.recordResult(
             user.id,
             'roulette',
             this.outcome,
             `Resultado: ${winningNumber} ${winningColor}. Predicción: ${this.selectedValue}.`,
-        );
+            this.currentRoundId ?? undefined,
+          );
         }
 
     } finally {

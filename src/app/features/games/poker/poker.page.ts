@@ -45,6 +45,7 @@ export class PokerPage {
   private readonly authService = inject(AuthService);
   private readonly statisticsService = inject(StatisticsService);
   private readonly router = inject(Router);
+  private currentRoundId: string | null = null;
 
   private deck: PokerCard[] = [];
 
@@ -166,6 +167,7 @@ export class PokerPage {
       return;
     }
 
+    this.currentRoundId = crypto.randomUUID();
     this.deck = this.shuffleDeck(this.createDeck());
 
     this.playerCards = [];
@@ -457,6 +459,7 @@ export class PokerPage {
         'poker',
         this.outcome,
         `Jugador: ${playerHand.name}. Oponente: ${opponentHand.name}.`,
+        this.currentRoundId ?? undefined,
       );
     }
   }
@@ -492,10 +495,11 @@ export class PokerPage {
 
     if (user) {
         this.statisticsService.recordResult(
-        user.id,
-        'poker',
-        'loss',
-        `Jugador se retiró durante la fase: ${abandonedStage}.`,
+          user.id,
+          'poker',
+          'loss',
+          `Jugador se retiró durante la fase: ${abandonedStage}.`,
+          this.currentRoundId ?? undefined,
         );
     }
     }

@@ -94,4 +94,9 @@
       </ion-card-content>
     </ion-card>
   </main>
+  <app-legal-consent-modal
+    [isOpen]="showLegalModal"
+    (accepted)="onLegalAccepted()"
+    (dismissed)="onLegalDismissed()"
+  />
 </ion-content>

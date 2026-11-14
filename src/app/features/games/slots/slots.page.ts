@@ -31,6 +31,7 @@ export class SlotsPage {
   private readonly statisticsService = inject(StatisticsService);
   private readonly router = inject(Router);
   private readonly changeDetector = inject(ChangeDetectorRef);
+  private currentRoundId: string | null = null;
 
   public readonly symbols = [
     '🍒',
@@ -65,6 +66,7 @@ export class SlotsPage {
       return;
     }
 
+    this.currentRoundId = crypto.randomUUID();
     this.isSpinning = true;
     this.hasPlayed = false;
     this.outcome = null;
@@ -131,6 +133,7 @@ export class SlotsPage {
           'slots',
           this.outcome,
           `Resultado: ${winningSymbols.join(' | ')}`,
+          this.currentRoundId ?? undefined,
         );
       }
 
@@ -147,6 +150,7 @@ export class SlotsPage {
       return;
     }
 
+    this.currentRoundId = null;
     this.reels = ['🍒', '🍋', '🔔'];
     this.spinningReels = [false, false, false];
 

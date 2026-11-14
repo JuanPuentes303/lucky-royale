@@ -1,0 +1,86 @@
+
+:host {
+  display: contents;
+}
+
+ion-modal {
+  --width: min(720px, calc(100% - 28px));
+  --height: min(90%, 780px);
+  --border-radius: 20px;
+  --background: var(--ion-background-color);
+}
+
+.legal-content {
+  --background: var(--ion-background-color);
+}
+
+.legal-intro {
+  padding: 12px 4px 24px;
+  border-bottom: 1px solid var(--ion-color-step-200);
+}
+
+.eyebrow {
+  color: var(--ion-color-primary);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.legal-intro h2 {
+  font-size: 25px;
+  font-weight: 800;
+  margin: 12px 0;
+}
+
+.legal-intro p,
+.legal-section p,
+.legal-section li {
+  color: var(--ion-color-medium);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.legal-section {
+  padding: 22px 4px;
+  border-bottom: 1px solid var(--ion-color-step-200);
+}
+
+.legal-section h3 {
+  color: var(--ion-color-primary);
+  font-size: 19px;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.legal-section h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: 20px;
+}
+
+.legal-section ul {
+  padding-left: 22px;
+}
+
+.legal-acceptance {
+  display: grid;
+  gap: 18px;
+  padding: 24px 4px 32px;
+}
+
+.legal-acceptance h3 {
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.legal-acceptance ion-checkbox {
+  font-size: 14px;
+  --size: 20px;
+  --checkbox-background-checked: var(--ion-color-primary);
+}
+
+.legal-warning {
+  color: var(--ion-color-medium);
+  font-size: 12px;
+  line-height: 1.5;
+}

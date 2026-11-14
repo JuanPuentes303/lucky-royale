@@ -32,6 +32,7 @@ export class DicePage {
   private readonly statisticsService = inject(StatisticsService);
   private readonly router = inject(Router);
   private readonly changeDetector = inject(ChangeDetectorRef);
+  private currentRoundId: string | null = null;
 
   public diceOne = 1;
   public diceTwo = 1;
@@ -61,9 +62,11 @@ export class DicePage {
 
   
 public async rollDice(): Promise<void> {
-  if (!this.selectedChoice || this.isRolling) {
+  if (!this.selectedChoice || this.isRolling || this.hasPlayed) {
     return;
   }
+
+  this.currentRoundId = crypto.randomUUID();
 
   this.isRolling = true;
   this.hasPlayed = false;
@@ -107,6 +110,7 @@ public async rollDice(): Promise<void> {
         `Dados: ${this.diceOne} + ${this.diceTwo} = ${sum}. Predicción: ${
           this.selectedChoice === 'high' ? 'Alta' : 'Baja'
         }.`,
+        this.currentRoundId,
       );
     }
 
@@ -125,6 +129,7 @@ public async rollDice(): Promise<void> {
     }
 
     this.selectedChoice = null;
+    this.currentRoundId = null;
     this.hasPlayed = false;
     this.outcome = null;
 

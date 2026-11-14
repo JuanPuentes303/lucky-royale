@@ -36,6 +36,7 @@ export class BlackjackPage {
   private readonly authService = inject(AuthService);
   private readonly statisticsService = inject(StatisticsService);
   private readonly router = inject(Router);
+  private currentRoundId: string | null = null;
 
   private deck: PlayingCard[] = [];
 
@@ -131,6 +132,7 @@ export class BlackjackPage {
       return;
     }
 
+    this.currentRoundId = crypto.randomUUID();
     this.deck = this.shuffleDeck(this.createDeck());
 
     this.playerCards = [];
@@ -228,6 +230,7 @@ export class BlackjackPage {
         'blackjack',
         this.outcome,
         `Jugador: ${this.playerTotal} puntos. Crupier: ${this.dealerTotal} puntos.`,
+        this.currentRoundId ?? undefined,
       );
     }
   }
