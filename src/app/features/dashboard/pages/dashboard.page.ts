@@ -61,6 +61,10 @@ export class DashboardPage {
     void this.router.navigateByUrl('/games/blackjack');
   }
 
+  public openPoker(): void {
+    void this.router.navigateByUrl('/games/poker');
+  }
+
   public get userName(): string {
     return this.authService.currentUser?.name ?? 'Jugador';
   }

@@ -62,6 +62,13 @@ export const routes: Routes = [
       .then(m => m.BlackjackPage),
   },
   {
+  path: 'games/poker',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./features/games/poker/poker.page')
+      .then(m => m.PokerPage),
+  },
+  {
     path: '',
     redirectTo: 'auth/login',
     pathMatch: 'full',
