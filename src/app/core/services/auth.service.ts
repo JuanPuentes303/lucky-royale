@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { UserProfile } from '../../shared/interfaces/user.interface';
 import { StorageService } from './storage.service';
@@ -20,7 +20,7 @@ export class AuthService {
 
   private readonly currentUserSubject: BehaviorSubject<UserProfile | null>;
 
-  public readonly currentUser$ = this.currentUserSubjectObservable();
+  public readonly currentUser$: Observable<UserProfile | null>;
 
   constructor(
     private readonly storageService: StorageService
@@ -28,10 +28,7 @@ export class AuthService {
     this.currentUserSubject = new BehaviorSubject<UserProfile | null>(
       this.storageService.get<UserProfile>(this.sessionKey)
     );
-  }
-
-  private currentUserSubjectObservable() {
-    return this.currentUserSubject.asObservable();
+    this.currentUser$ = this.currentUserSubject.asObservable();
   }
 
   public get currentUser(): UserProfile | null {
