@@ -46,7 +46,21 @@ export const routes: Routes = [
   loadComponent: () =>
     import('./features/games/roulette/roulette.page')
       .then(m => m.RoulettePage),
-  },  
+  },
+  {
+  path: 'games/slots',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./features/games/slots/slots.page')
+      .then(m => m.SlotsPage),
+  },
+  {
+  path: 'games/blackjack',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./features/games/blackjack/blackjack.page')
+      .then(m => m.BlackjackPage),
+  },
   {
     path: '',
     redirectTo: 'auth/login',

@@ -1,5 +1,5 @@
 
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -33,7 +33,7 @@ import { GAMES } from '../../../shared/models/game.model';
     IonChip,
   ],
 })
-export class ProfilePage implements OnInit {
+export class ProfilePage {
   private readonly authService = inject(AuthService);
   private readonly statisticsService = inject(StatisticsService);
   private readonly router = inject(Router);
@@ -61,7 +61,7 @@ export class ProfilePage implements OnInit {
     baccarat: 'Bacará',
   };
 
-  ngOnInit(): void {
+  ionViewWillEnter(): void {
     this.loadProfile();
   }
 

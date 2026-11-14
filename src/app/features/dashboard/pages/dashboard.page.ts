@@ -53,6 +53,14 @@ export class DashboardPage {
     void this.router.navigateByUrl('/games/roulette');
   }
 
+  public openSlots(): void {
+    void this.router.navigateByUrl('/games/slots');
+  }
+
+  public openBlackjack(): void {
+    void this.router.navigateByUrl('/games/blackjack');
+  }
+
   public get userName(): string {
     return this.authService.currentUser?.name ?? 'Jugador';
   }

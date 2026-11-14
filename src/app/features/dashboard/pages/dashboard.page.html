@@ -71,7 +71,12 @@
                   {{ gameSymbols[game.id] }}
                 </div>
 
-                @if (game.id === 'dice') {
+                @if (
+                  game.id === 'dice' ||
+                  game.id === 'roulette' ||
+                  game.id === 'slots' ||
+                  game.id === 'blackjack'
+                ) {
                   <ion-chip color="success">Disponible</ion-chip>
                 } @else {
                   <ion-chip color="warning">Próximamente</ion-chip>
@@ -83,6 +88,7 @@
 
               <p>{{ game.description }}</p>
 
+              
               <div class="game-card-footer">
 
                 @if (game.id === 'dice') {
@@ -93,6 +99,7 @@
                   >
                     Jugar ahora →
                   </button>
+
                 } @else if (game.id === 'roulette') {
                   <button
                     type="button"
@@ -101,12 +108,32 @@
                   >
                     Jugar ahora →
                   </button>
+
+                } @else if (game.id === 'slots') {
+                  <button
+                    type="button"
+                    class="play-link"
+                    (click)="openSlots()"
+                  >
+                    Jugar ahora →
+                  </button>
+
+                } @else if (game.id === 'blackjack') {
+                  <button
+                    type="button"
+                    class="play-link"
+                    (click)="openBlackjack()"
+                  >
+                    Jugar ahora →
+                  </button>
+
                 } @else {
                   <span>Próximamente</span>
                   <span class="game-arrow">→</span>
                 }
 
               </div>
+
 
             </ion-card-content>
 
