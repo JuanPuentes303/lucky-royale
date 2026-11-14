@@ -41,6 +41,10 @@ export class DashboardPage {
     baccarat: '♣',
   };
 
+  public openProfile(): void {
+    void this.router.navigateByUrl('/profile');
+  }
+
   public get userName(): string {
     return this.authService.currentUser?.name ?? 'Jugador';
   }
