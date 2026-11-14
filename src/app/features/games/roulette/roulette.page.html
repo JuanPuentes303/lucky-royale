@@ -1,0 +1,235 @@
+
+<ion-content class="casino-content">
+
+  <main class="roulette-container">
+
+    <header class="game-header">
+
+      <ion-button fill="clear" color="primary" (click)="goToDashboard()">
+        ← Volver al menú
+      </ion-button>
+
+      <span class="eyebrow">LUCKY ROYALE ORIGINAL</span>
+      <h1>EUROPEAN ROULETTE</h1>
+      <p>37 números. Una sola oportunidad de acertar.</p>
+
+    </header>
+
+    <ion-card class="roulette-table">
+      <ion-card-content>
+
+        <div class="roulette-decoration">
+          <span>♠</span>
+          <span>♦</span>
+          <span>♣</span>
+          <span>♥</span>
+        </div>
+
+        <h2>LA RULETA</h2>
+
+        <!-- RULETA ANIMADA -->
+        <div class="wheel-container">
+
+          <div class="wheel-pointer"></div>
+
+          <div
+            class="roulette-wheel"
+            [style.background]="wheelBackground"
+            [style.transform]="'rotate(' + rotationDegrees + 'deg)'"
+            [class.spinning]="isSpinning"
+          >
+
+            @for (number of wheelNumbers; track number.value) {
+              <span
+                class="wheel-number"
+                [class.green]="number.color === 'green'"
+                [style.transform]="
+                  'rotate(' + (number.angle + 180 / 37) +
+                  'deg) translateY(-135px) rotate(-' +
+                  (number.angle + 180 / 37) + 'deg)'
+                "
+              >
+                {{ number.value }}
+              </span>
+            }
+
+            <div class="wheel-center">
+              <span>♛</span>
+              <strong>LR</strong>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="result-display">
+
+          <span>ÚLTIMO RESULTADO</span>
+
+          @if (resultNumber !== null) {
+
+            <div
+              class="result-number"
+              [class.red]="resultColor === 'red'"
+              [class.black]="resultColor === 'black'"
+              [class.green]="resultColor === 'green'"
+            >
+              {{ resultNumber }}
+            </div>
+
+            <span class="result-color">
+              {{ resultColorName }}
+            </span>
+
+          } @else {
+            <strong class="waiting-result">—</strong>
+          }
+
+        </div>
+
+        <!-- PREDICCIONES -->
+        <section class="prediction-section">
+
+          <h3>Selecciona tu predicción</h3>
+
+          <div class="prediction-group">
+
+            <span class="prediction-label">POR COLOR</span>
+
+            <div class="prediction-grid">
+
+              <button
+                type="button"
+                class="prediction-option red-option"
+                [class.selected]="selectedType === 'color' && selectedValue === 'red'"
+                [disabled]="isSpinning"
+                (click)="selectPrediction('color', 'red')"
+              >
+                ROJO
+              </button>
+
+              <button
+                type="button"
+                class="prediction-option black-option"
+                [class.selected]="selectedType === 'color' && selectedValue === 'black'"
+                [disabled]="isSpinning"
+                (click)="selectPrediction('color', 'black')"
+              >
+                NEGRO
+              </button>
+
+            </div>
+
+          </div>
+
+          <div class="prediction-group">
+
+            <span class="prediction-label">POR PARIDAD</span>
+
+            <div class="prediction-grid">
+
+              <button
+                type="button"
+                class="prediction-option"
+                [class.selected]="selectedType === 'parity' && selectedValue === 'even'"
+                [disabled]="isSpinning"
+                (click)="selectPrediction('parity', 'even')"
+              >
+                PAR
+              </button>
+
+              <button
+                type="button"
+                class="prediction-option"
+                [class.selected]="selectedType === 'parity' && selectedValue === 'odd'"
+                [disabled]="isSpinning"
+                (click)="selectPrediction('parity', 'odd')"
+              >
+                IMPAR
+              </button>
+
+            </div>
+
+          </div>
+
+          <div class="prediction-group">
+
+            <span class="prediction-label">NÚMERO EXACTO (0–36)</span>
+
+            <div class="number-selector">
+
+              <input
+                type="number"
+                min="0"
+                max="36"
+                step="1"
+                [value]="numberInput"
+                [disabled]="isSpinning"
+                (input)="onNumberInput($event)"
+              />
+
+              <button
+                type="button"
+                [disabled]="isSpinning"
+                [class.selected]="selectedType === 'number'"
+                (click)="selectNumber()"
+              >
+                SELECCIONAR
+              </button>
+
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- MENSAJE -->
+        <div
+          class="result-message"
+          [class.win]="outcome === 'win'"
+          [class.loss]="outcome === 'loss'"
+        >
+          {{ resultMessage }}
+        </div>
+
+        <!-- ACCIÓN -->
+        @if (!hasPlayed) {
+
+          <ion-button
+            expand="block"
+            class="spin-button"
+            [disabled]="selectedValue === null || isSpinning"
+            (click)="spinRoulette()"
+          >
+            {{ isSpinning ? 'GIRANDO...' : 'GIRAR RULETA' }}
+          </ion-button>
+
+        } @else {
+
+          <ion-button
+            expand="block"
+            class="spin-button"
+            (click)="playAgain()"
+          >
+            VOLVER A JUGAR
+          </ion-button>
+
+        }
+
+        <p class="game-instructions">
+          La ruleta europea contiene los números del 0 al 36.
+          El cero es verde y no pertenece a las categorías
+          par ni impar.
+        </p>
+
+      </ion-card-content>
+    </ion-card>
+
+    <footer class="game-footer">
+      LUCKY ROYALE · EUROPEAN ROULETTE
+    </footer>
+
+  </main>
+
+</ion-content>

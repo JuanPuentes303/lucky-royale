@@ -49,6 +49,10 @@ export class DashboardPage {
     void this.router.navigateByUrl('/games/dice');
   }
 
+  public openRoulette(): void {
+    void this.router.navigateByUrl('/games/roulette');
+  }
+
   public get userName(): string {
     return this.authService.currentUser?.name ?? 'Jugador';
   }
