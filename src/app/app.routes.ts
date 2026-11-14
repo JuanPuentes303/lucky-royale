@@ -34,6 +34,13 @@ export const routes: Routes = [
         .then(m => m.ProfilePage),
   },
   {
+  path: 'games/dice',
+  canActivate: [authGuard],
+  loadComponent: () =>
+    import('./features/games/dice/dice.page')
+      .then(m => m.DicePage),
+  },  
+  {
     path: '',
     redirectTo: 'auth/login',
     pathMatch: 'full',

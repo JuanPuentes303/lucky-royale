@@ -303,3 +303,17 @@
     transform: none;
   }
 }
+
+.play-link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #f0d496;
+  font-weight: 800;
+  font-size: .85rem;
+  cursor: pointer;
+}
+
+.play-link:hover {
+  color: #ffffff;
+}

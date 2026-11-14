@@ -1,0 +1,255 @@
+
+.dice-container {
+  max-width: 850px;
+  margin: auto;
+  padding: 18px;
+}
+
+.game-header {
+  text-align: center;
+  padding: 20px 0 25px;
+
+  ion-button {
+    display: flex;
+    margin-right: auto;
+  }
+
+  .eyebrow {
+    color: #d8b96f;
+    font-size: .75rem;
+    font-weight: 800;
+    letter-spacing: 3px;
+  }
+
+  h1 {
+    color: #f0d496;
+    font-size: clamp(1.8rem, 5vw, 2.7rem);
+    font-weight: 900;
+    letter-spacing: 3px;
+    margin: 12px 0;
+  }
+
+  p {
+    color: #bdcec2;
+  }
+}
+
+.dice-table {
+  --background: linear-gradient(145deg, #19432e, #0d2419);
+  max-width: 720px;
+  margin: auto;
+  border: 2px solid #a8894d;
+  border-radius: 28px;
+  box-shadow: 0 20px 55px rgba(0, 0, 0, .3);
+
+  ion-card-content {
+    padding: clamp(18px, 5vw, 38px);
+    text-align: center;
+  }
+
+  h2 {
+    color: #f0d496;
+    font-size: 1.05rem;
+    letter-spacing: 4px;
+    margin: 25px 0;
+  }
+}
+
+.table-decoration {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  color: #e5c579;
+  font-size: 1.5rem;
+  opacity: .7;
+}
+
+.dice-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(20px, 7vw, 55px);
+  padding: 25px 0;
+}
+
+.die {
+  width: clamp(85px, 19vw, 125px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg, #ffffff, #dce3d9);
+  border: 5px solid #b99753;
+  border-radius: 20px;
+  box-shadow:
+    inset 0 0 12px rgba(0, 0, 0, .12),
+    0 12px 22px rgba(0, 0, 0, .35);
+
+  span {
+    color: #173523;
+    font-size: clamp(3rem, 9vw, 5rem);
+    font-weight: 900;
+    text-shadow: 0 2px 1px rgba(0, 0, 0, .1);
+  }
+}
+
+.dice-area.rolling .die:first-child {
+  animation: dice-roll-left .35s ease-in-out infinite alternate;
+}
+
+.dice-area.rolling .die:last-child {
+  animation: dice-roll-right .4s ease-in-out infinite alternate;
+}
+
+@keyframes dice-roll-left {
+  from {
+    transform: rotate(-12deg) translateY(-8px);
+  }
+
+  to {
+    transform: rotate(18deg) translateY(8px);
+  }
+}
+
+@keyframes dice-roll-right {
+  from {
+    transform: rotate(15deg) translateY(8px);
+  }
+
+  to {
+    transform: rotate(-17deg) translateY(-8px);
+  }
+}
+
+.total-display {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 12px auto 28px;
+
+  span {
+    color: #b8c9ba;
+    font-size: .75rem;
+    letter-spacing: 3px;
+  }
+
+  strong {
+    color: #f0d496;
+    font-size: 2.7rem;
+    font-weight: 900;
+  }
+}
+
+.prediction-section h3 {
+  color: #f4f5ef;
+  font-size: 1.05rem;
+  margin-bottom: 18px;
+}
+
+.prediction-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+  max-width: 480px;
+  margin: auto;
+}
+
+.prediction-button {
+  padding: 18px 10px;
+  border-radius: 14px;
+  border: 1px solid #54745a;
+  background: #193629;
+  color: #f4f5ef;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: .2s ease;
+
+  strong {
+    color: #f0d496;
+    font-size: 1.1rem;
+  }
+
+  span {
+    color: #bdcec2;
+  }
+
+  &:hover:not(:disabled) {
+    border-color: #e5c579;
+    transform: translateY(-3px);
+  }
+
+  &.selected {
+    background: #765f30;
+    border-color: #f0d496;
+    box-shadow: 0 0 18px rgba(229, 197, 121, .2);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: .65;
+  }
+}
+
+.result-panel {
+  margin: 25px auto 15px;
+  padding: 16px;
+  border: 1px solid #48604b;
+  border-radius: 13px;
+  background: rgba(5, 20, 12, .45);
+  color: #f4f5ef;
+  line-height: 1.5;
+  font-weight: 700;
+  min-height: 52px;
+
+  &.win {
+    color: #7ce3b5;
+    border-color: #57a87e;
+  }
+
+  &.loss {
+    color: #ff9ca3;
+    border-color: #a6535b;
+  }
+
+  &.draw {
+    color: #f0d496;
+    border-color: #a8894d;
+  }
+}
+
+.roll-button {
+  --background: #e5c579;
+  --color: #102016;
+  --border-radius: 13px;
+  min-height: 53px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  margin-top: 15px;
+}
+
+.game-instructions {
+  max-width: 480px;
+  margin: 22px auto 5px;
+  color: #aebfad;
+  font-size: .8rem;
+  line-height: 1.7;
+}
+
+.game-footer {
+  text-align: center;
+  color: #9caf9f;
+  letter-spacing: 3px;
+  font-size: .7rem;
+  margin: 30px 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dice-area.rolling .die {
+    animation: none;
+  }
+
+  .prediction-button {
+    transition: none;
+  }
+}

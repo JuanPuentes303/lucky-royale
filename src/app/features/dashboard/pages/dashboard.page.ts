@@ -45,6 +45,10 @@ export class DashboardPage {
     void this.router.navigateByUrl('/profile');
   }
 
+  public openDice(): void {
+    void this.router.navigateByUrl('/games/dice');
+  }
+
   public get userName(): string {
     return this.authService.currentUser?.name ?? 'Jugador';
   }
