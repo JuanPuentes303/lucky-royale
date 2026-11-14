@@ -1,16 +1,134 @@
 
 <ion-content class="casino-content">
+
   <main class="dashboard-container">
-    <span class="brand-symbol">♠ ♥ ♦ ♣</span>
 
-    <h1>LUCKY ROYALE</h1>
+    <!-- ENCABEZADO -->
+    <header class="dashboard-header">
 
-    <h2>¡Bienvenido, {{ userName }}!</h2>
+      <div class="brand">
+        <span class="brand-symbol">♠ ♥ ♦ ♣</span>
+        <span class="brand-name">LUCKY ROYALE</span>
+      </div>
 
-    <p>Tu cuenta está lista. Próximamente encontrarás aquí todos los juegos.</p>
+      <ion-button
+        fill="outline"
+        color="primary"
+        (click)="logout()"
+      >
+        Cerrar sesión
+      </ion-button>
 
-    <ion-button expand="block" (click)="logout()">
-      Cerrar sesión
-    </ion-button>
+    </header>
+
+    <!-- BIENVENIDA -->
+    <section class="welcome-section">
+
+      <div class="welcome-text">
+        <span class="eyebrow">TU ESPACIO DE JUEGO</span>
+
+        <h1>
+          Bienvenido,
+          <span>{{ userName }}</span>
+        </h1>
+
+        <p>
+          Elige tu juego favorito y disfruta de la experiencia Lucky Royale.
+        </p>
+      </div>
+
+      <div class="user-avatar" aria-label="Inicial del usuario">
+        {{ userInitial }}
+      </div>
+
+    </section>
+
+    <!-- SECCIÓN DE JUEGOS -->
+    <section class="games-section">
+
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">NUESTRA COLECCIÓN</span>
+          <h2>Explora los juegos</h2>
+        </div>
+
+        <ion-chip color="primary">
+          {{ games.length }} juegos
+        </ion-chip>
+      </div>
+
+      <div class="games-grid">
+
+        @for (game of games; track game.id) {
+
+          <ion-card class="game-card">
+
+            <ion-card-content>
+
+              <div class="game-card-top">
+
+                <div class="game-symbol">
+                  {{ gameSymbols[game.id] }}
+                </div>
+
+                <ion-chip color="warning">
+                  Próximamente
+                </ion-chip>
+
+              </div>
+
+              <h3>{{ game.title }}</h3>
+
+              <p>{{ game.description }}</p>
+
+              <div class="game-card-footer">
+                <span>Lucky Royale</span>
+                <span class="game-arrow">→</span>
+              </div>
+
+            </ion-card-content>
+
+          </ion-card>
+
+        }
+
+      </div>
+
+    </section>
+
+    <!-- PERFIL -->
+    <section class="profile-section">
+
+      <div class="profile-information">
+
+        <span class="profile-symbol">♛</span>
+
+        <div>
+          <span class="eyebrow">TU CUENTA</span>
+          <h2>Perfil y estadísticas</h2>
+          <p>
+            Consulta tu actividad, resultados e historial de partidas.
+          </p>
+        </div>
+
+      </div>
+
+      <ion-button
+        fill="outline"
+        color="primary"
+        disabled
+      >
+        Próximamente
+      </ion-button>
+
+    </section>
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="dashboard-footer">
+      <span>LUCKY ROYALE</span>
+      <p>Entretenimiento y juegos recreativos.</p>
+    </footer>
+
   </main>
+
 </ion-content>
