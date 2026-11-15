@@ -1,22 +1,13 @@
-
-import { Component, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-
-import {
-  IonButton,
-  IonCard,
-  IonCardContent,
-  IonChip,
-  IonContent,
-} from '@ionic/angular';
+import { IonButton, IonCard, IonCardContent, IonChip, IonContent } from '@ionic/angular';
 
 import { AuthService } from '../../../core/services/auth.service';
 import { StatisticsService } from '../../../core/services/statistics.service';
-
-import { GameStatistics } from '../../../shared/interfaces/game-statistics.interface';
-import { GameHistoryEntry } from '../../../shared/interfaces/game-history.interface';
-import { GameId } from '../../../shared/interfaces/game.interface';
+import type { GameHistoryEntry } from '../../../shared/interfaces/game-history.interface';
+import type { GameStatistics } from '../../../shared/interfaces/game-statistics.interface';
+import type { GameId } from '../../../shared/interfaces/game.interface';
 import { GAMES } from '../../../shared/models/game.model';
 
 @Component({
@@ -24,14 +15,7 @@ import { GAMES } from '../../../shared/models/game.model';
   standalone: true,
   templateUrl: './profile.page.html',
   styleUrl: './profile.page.scss',
-  imports: [
-    DatePipe,
-    IonContent,
-    IonButton,
-    IonCard,
-    IonCardContent,
-    IonChip,
-  ],
+  imports: [DatePipe, IonContent, IonButton, IonCard, IonCardContent, IonChip],
 })
 export class ProfilePage {
   private readonly authService = inject(AuthService);
@@ -77,23 +61,17 @@ export class ProfilePage {
     this.userEmail = user.email;
     this.createdAt = user.createdAt;
 
-    this.statistics =
-      this.statisticsService.getStatistics(user.id);
+    this.statistics = this.statisticsService.getStatistics(user.id);
 
-    this.history =
-      this.statisticsService.getHistory(user.id);
+    this.history = this.statisticsService.getHistory(user.id);
 
-    this.totalGames =
-      this.statisticsService.getTotalGames(user.id);
+    this.totalGames = this.statisticsService.getTotalGames(user.id);
 
-    this.totalWins =
-      this.statisticsService.getTotalWins(user.id);
+    this.totalWins = this.statisticsService.getTotalWins(user.id);
 
-    this.totalLosses =
-      this.statisticsService.getTotalLosses(user.id);
+    this.totalLosses = this.statisticsService.getTotalLosses(user.id);
 
-    this.totalDraws =
-      this.statisticsService.getTotalDraws(user.id);
+    this.totalDraws = this.statisticsService.getTotalDraws(user.id);
   }
 
   public getGameName(gameId: GameId): string {
@@ -105,9 +83,7 @@ export class ProfilePage {
       return 0;
     }
 
-    return Math.round(
-      (statistic.wins / statistic.gamesPlayed) * 100,
-    );
+    return Math.round((statistic.wins / statistic.gamesPlayed) * 100);
   }
 
   public logout(): void {

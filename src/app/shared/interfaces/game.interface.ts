@@ -1,10 +1,4 @@
-export type GameId =
-  | 'blackjack'
-  | 'roulette'
-  | 'poker'
-  | 'dice'
-  | 'slots'
-  | 'baccarat';
+export type GameId = 'blackjack' | 'roulette' | 'poker' | 'dice' | 'slots' | 'baccarat';
 
 export type GameOutcome = 'win' | 'loss' | 'draw';
 

@@ -1,27 +1,11 @@
-
 import { Component, inject } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import {
-  FormBuilder,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import {
-  IonButton,
-  IonCard,
-  IonCardContent,
-  IonContent,
-  IonInput,
-  IonItem,
-  IonLabel,
-  IonNote,
-} from '@ionic/angular';
-
-import { LegalConsentService } from '../../../../core/services/legal-consent.service';
-
-import { LegalConsentModalComponent } from '../../../legal/components/legal-consent-modal/legal-consent-modal.component';
+import { IonButton, IonCard, IonCardContent, IonContent, IonInput, IonItem, IonLabel, IonNote } from '@ionic/angular';
 
 import { AuthService } from '../../../../core/services/auth.service';
+import { LegalConsentService } from '../../../../core/services/legal-consent.service';
+import { LegalConsentModalComponent } from '../../../legal/components/legal-consent-modal/legal-consent-modal.component';
 
 @Component({
   selector: 'app-register',
@@ -59,15 +43,13 @@ export class RegisterPage {
     confirmPassword: ['', [Validators.required]],
   });
 
-  
   public onSubmit(): void {
     if (this.registerForm.invalid || this.isLoading) {
       this.registerForm.markAllAsTouched();
       return;
     }
 
-    const { password, confirmPassword } =
-      this.registerForm.getRawValue();
+    const { password, confirmPassword } = this.registerForm.getRawValue();
 
     if (password !== confirmPassword) {
       this.errorMessage = 'Las contraseñas no coinciden.';
@@ -78,14 +60,12 @@ export class RegisterPage {
     this.showLegalModal = true;
   }
 
-
   public async onLegalAccepted(): Promise<void> {
     if (this.isLoading || this.registerForm.invalid) {
       return;
     }
 
-    const { name, email, password, confirmPassword } =
-      this.registerForm.getRawValue();
+    const { name, email, password, confirmPassword } = this.registerForm.getRawValue();
 
     if (password !== confirmPassword) {
       this.errorMessage = 'Las contraseñas no coinciden.';
@@ -97,31 +77,19 @@ export class RegisterPage {
     this.errorMessage = '';
 
     try {
-      const user = await this.authService.register(
-        name,
-        email,
-        password,
-      );
+      const user = await this.authService.register(name, email, password);
 
-      this.legalConsentService.recordConsent(
-        user.id,
-        true,
-        true,
-      );
+      this.legalConsentService.recordConsent(user.id, true, true);
 
       this.showLegalModal = false;
 
       await this.router.navigateByUrl('/dashboard');
-
     } catch (error) {
       this.showLegalModal = false;
 
-      this.errorMessage =
-        error instanceof Error
-          ? error.message
-          : 'No fue posible crear la cuenta.';
-
+      this.errorMessage = error instanceof Error ? error.message : 'No fue posible crear la cuenta.';
     } finally {
+      this.showLegalModal = false;
       this.isLoading = false;
     }
   }
@@ -129,5 +97,4 @@ export class RegisterPage {
   public onLegalDismissed(): void {
     this.showLegalModal = false;
   }
-
 }

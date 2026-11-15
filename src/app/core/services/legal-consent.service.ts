@@ -1,8 +1,8 @@
-
 import { Injectable, inject } from '@angular/core';
 
+import type { LegalConsent } from '../../shared/interfaces/legal-consent.interface';
+
 import { StorageService } from './storage.service';
-import { LegalConsent } from '../../shared/interfaces/legal-consent.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -17,19 +17,9 @@ export class LegalConsentService {
     return `lucky-royale.legal-consent.${userId}`;
   }
 
-  public recordConsent(
-    userId: string,
-    termsAccepted: boolean,
-    dataProcessingAuthorized: boolean,
-  ): LegalConsent {
-    if (
-      !userId.trim() ||
-      !termsAccepted ||
-      !dataProcessingAuthorized
-    ) {
-      throw new Error(
-        'Debes aceptar los documentos legales para continuar.',
-      );
+  public recordConsent(userId: string, termsAccepted: boolean, dataProcessingAuthorized: boolean): LegalConsent {
+    if (!userId.trim() || !termsAccepted || !dataProcessingAuthorized) {
+      throw new Error('Debes aceptar los documentos legales para continuar.');
     }
 
     const acceptedAt = new Date().toISOString();
@@ -42,25 +32,18 @@ export class LegalConsentService {
       dataProcessingAuthorizedAt: acceptedAt,
     };
 
-    this.storageService.set(
-      this.getConsentKey(userId),
-      consent,
-    );
+    this.storageService.set(this.getConsentKey(userId), consent);
 
     return consent;
   }
 
   public getConsent(userId: string): LegalConsent | null {
-    return this.storageService.get<LegalConsent>(
-      this.getConsentKey(userId),
-    );
+    return this.storageService.get<LegalConsent>(this.getConsentKey(userId));
   }
 
   public hasCurrentConsent(userId: string): boolean {
     const consent = this.getConsent(userId);
 
-    return !!consent &&
-      consent.termsVersion === this.termsVersion &&
-      consent.privacyVersion === this.privacyVersion;
+    return !!consent && consent.termsVersion === this.termsVersion && consent.privacyVersion === this.privacyVersion;
   }
 }

@@ -1,13 +1,6 @@
-
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-
-import {
-  IonButton,
-  IonCard,
-  IonCardContent,
-  IonContent,
-} from '@ionic/angular';
+import { IonButton, IonCard, IonCardContent, IonContent } from '@ionic/angular';
 
 import { AuthService } from '../../../core/services/auth.service';
 import { StatisticsService } from '../../../core/services/statistics.service';
@@ -34,12 +27,7 @@ interface HandValue {
   standalone: true,
   templateUrl: './poker.page.html',
   styleUrl: './poker.page.scss',
-  imports: [
-    IonContent,
-    IonButton,
-    IonCard,
-    IonCardContent,
-  ],
+  imports: [IonContent, IonButton, IonCard, IonCardContent],
 })
 export class PokerPage {
   private readonly authService = inject(AuthService);
@@ -61,8 +49,7 @@ export class PokerPage {
 
   public outcome: PokerOutcome | null = null;
 
-  public resultMessage =
-    'Prepárate para jugar Texas Hold’em.';
+  public resultMessage = 'Prepárate para jugar Texas Hold’em.';
 
   private createDeck(): PokerCard[] {
     const suits: PokerSuit[] = ['♠', '♥', '♦', '♣'];
@@ -83,14 +70,11 @@ export class PokerPage {
       { rank: 'A', value: 14 },
     ];
 
-    return suits.flatMap(suit =>
-      ranks.map(card => ({
+    return suits.flatMap((suit) =>
+      ranks.map((card) => ({
         ...card,
         suit,
-        color:
-          suit === '♥' || suit === '♦'
-            ? 'red' as const
-            : 'black' as const,
+        color: suit === '♥' || suit === '♦' ? ('red' as const) : ('black' as const),
       })),
     );
   }
@@ -156,10 +140,7 @@ export class PokerPage {
       return 'Cartas ocultas';
     }
 
-    return this.evaluateBestHand([
-      ...this.opponentCards,
-      ...this.communityCards,
-    ]).name;
+    return this.evaluateBestHand([...this.opponentCards, ...this.communityCards]).name;
   }
 
   public startGame(): void {
@@ -188,8 +169,7 @@ export class PokerPage {
     this.playerCards.push(this.drawCard());
     this.opponentCards.push(this.drawCard());
 
-    this.resultMessage =
-      'Cartas repartidas. Prepárate para revelar el Flop.';
+    this.resultMessage = 'Cartas repartidas. Prepárate para revelar el Flop.';
   }
 
   public advanceRound(): void {
@@ -199,38 +179,29 @@ export class PokerPage {
 
     if (this.stage === 'preflop') {
       // Flop: tres cartas comunitarias.
-      this.communityCards.push(
-        this.drawCard(),
-        this.drawCard(),
-        this.drawCard(),
-      );
+      this.communityCards.push(this.drawCard(), this.drawCard(), this.drawCard());
 
       this.stage = 'flop';
       this.resultMessage = 'Flop revelado. Continúa con el Turn.';
-
     } else if (this.stage === 'flop') {
       // Turn: cuarta carta.
       this.communityCards.push(this.drawCard());
 
       this.stage = 'turn';
       this.resultMessage = 'Turn revelado. Solo falta el River.';
-
     } else if (this.stage === 'turn') {
       // River: quinta carta.
       this.communityCards.push(this.drawCard());
 
       this.stage = 'river';
       this.resultMessage = 'River revelado. Ya puedes conocer el resultado.';
-
     } else if (this.stage === 'river') {
       this.finishRound();
     }
   }
 
   private evaluateFive(cards: PokerCard[]): HandValue {
-    const values = cards
-      .map(card => card.value)
-      .sort((a, b) => b - a);
+    const values = cards.map((card) => card.value).sort((a, b) => b - a);
 
     const counts = new Map<number, number>();
 
@@ -238,13 +209,9 @@ export class PokerPage {
       counts.set(value, (counts.get(value) ?? 0) + 1);
     }
 
-    const groups = [...counts.entries()].sort(
-      (a, b) => b[1] - a[1] || b[0] - a[0],
-    );
+    const groups = [...counts.entries()].sort((a, b) => b[1] - a[1] || b[0] - a[0]);
 
-    const isFlush = cards.every(
-      card => card.suit === cards[0].suit,
-    );
+    const isFlush = cards.every((card) => card.suit === cards[0].suit);
 
     const uniqueValues = [...new Set(values)];
 
@@ -266,9 +233,7 @@ export class PokerPage {
       return {
         category: 8,
         kickers: [straightHigh],
-        name: straightHigh === 14
-          ? 'Escalera real'
-          : 'Escalera de color',
+        name: straightHigh === 14 ? 'Escalera real' : 'Escalera de color',
       };
     }
 
@@ -276,19 +241,13 @@ export class PokerPage {
     if (groups[0][1] === 4) {
       return {
         category: 7,
-        kickers: [
-          groups[0][0],
-          groups[1][0],
-        ],
+        kickers: [groups[0][0], groups[1][0]],
         name: 'Póker',
       };
     }
 
     // Full house.
-    if (
-      groups[0][1] === 3 &&
-      groups[1][1] === 2
-    ) {
+    if (groups[0][1] === 3 && groups[1][1] === 2) {
       return {
         category: 6,
         kickers: [groups[0][0], groups[1][0]],
@@ -318,27 +277,21 @@ export class PokerPage {
     if (groups[0][1] === 3) {
       return {
         category: 3,
-        kickers: [
-          groups[0][0],
-          ...groups.slice(1).map(group => group[0]),
-        ],
+        kickers: [groups[0][0], ...groups.slice(1).map((group) => group[0])],
         name: 'Trío',
       };
     }
 
     const pairs = groups
-      .filter(group => group[1] === 2)
-      .map(group => group[0])
+      .filter((group) => group[1] === 2)
+      .map((group) => group[0])
       .sort((a, b) => b - a);
 
     // Doble pareja.
     if (pairs.length === 2) {
       return {
         category: 2,
-        kickers: [
-          ...pairs,
-          groups.find(group => group[1] === 1)?.[0] ?? 0,
-        ],
+        kickers: [...pairs, groups.find((group) => group[1] === 1)?.[0] ?? 0],
         name: 'Doble pareja',
       };
     }
@@ -350,8 +303,8 @@ export class PokerPage {
         kickers: [
           pairs[0],
           ...groups
-            .filter(group => group[1] === 1)
-            .map(group => group[0])
+            .filter((group) => group[1] === 1)
+            .map((group) => group[0])
             .sort((a, b) => b - a),
         ],
         name: 'Pareja',
@@ -371,8 +324,7 @@ export class PokerPage {
     }
 
     for (let i = 0; i < Math.max(a.kickers.length, b.kickers.length); i++) {
-      const difference =
-        (a.kickers[i] ?? 0) - (b.kickers[i] ?? 0);
+      const difference = (a.kickers[i] ?? 0) - (b.kickers[i] ?? 0);
 
       if (difference !== 0) {
         return difference;
@@ -391,13 +343,7 @@ export class PokerPage {
         for (let c = b + 1; c < cards.length - 2; c++) {
           for (let d = c + 1; d < cards.length - 1; d++) {
             for (let e = d + 1; e < cards.length; e++) {
-              const hand = this.evaluateFive([
-                cards[a],
-                cards[b],
-                cards[c],
-                cards[d],
-                cards[e],
-              ]);
+              const hand = this.evaluateFive([cards[a], cards[b], cards[c], cards[d], cards[e]]);
 
               if (!best || this.compareHands(hand, best) > 0) {
                 best = hand;
@@ -420,20 +366,11 @@ export class PokerPage {
       return;
     }
 
-    const playerHand = this.evaluateBestHand([
-      ...this.playerCards,
-      ...this.communityCards,
-    ]);
+    const playerHand = this.evaluateBestHand([...this.playerCards, ...this.communityCards]);
 
-    const opponentHand = this.evaluateBestHand([
-      ...this.opponentCards,
-      ...this.communityCards,
-    ]);
+    const opponentHand = this.evaluateBestHand([...this.opponentCards, ...this.communityCards]);
 
-    const comparison = this.compareHands(
-      playerHand,
-      opponentHand,
-    );
+    const comparison = this.compareHands(playerHand, opponentHand);
 
     this.opponentRevealed = true;
     this.isRoundActive = false;
@@ -474,7 +411,7 @@ export class PokerPage {
 
   public fold(): void {
     if (!this.isRoundActive) {
-        return;
+      return;
     }
 
     const abandonedStage = this.stage;
@@ -488,19 +425,18 @@ export class PokerPage {
 
     this.outcome = 'loss';
 
-    this.resultMessage =
-        'Te has retirado de la mano. El oponente gana la ronda.';
+    this.resultMessage = 'Te has retirado de la mano. El oponente gana la ronda.';
 
     const user = this.authService.currentUser;
 
     if (user) {
-        this.statisticsService.recordResult(
-          user.id,
-          'poker',
-          'loss',
-          `Jugador se retiró durante la fase: ${abandonedStage}.`,
-          this.currentRoundId ?? undefined,
-        );
+      this.statisticsService.recordResult(
+        user.id,
+        'poker',
+        'loss',
+        `Jugador se retiró durante la fase: ${abandonedStage}.`,
+        this.currentRoundId ?? undefined,
+      );
     }
-    }
+  }
 }

@@ -1,4 +1,4 @@
-import { GameDefinition } from '../interfaces/game.interface';
+import type { GameDefinition } from '../interfaces/game.interface';
 
 export const GAMES: readonly GameDefinition[] = [
   {

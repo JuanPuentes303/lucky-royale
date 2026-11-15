@@ -1,21 +1,7 @@
-
 import { Component, inject } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import {
-  FormBuilder,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import {
-  IonButton,
-  IonCard,
-  IonCardContent,
-  IonContent,
-  IonInput,
-  IonItem,
-  IonLabel,
-  IonNote,
-} from '@ionic/angular';
+import { IonButton, IonCard, IonCardContent, IonContent, IonInput, IonItem, IonLabel, IonNote } from '@ionic/angular';
 
 import { AuthService } from '../../../../core/services/auth.service';
 
@@ -66,10 +52,7 @@ export class LoginPage {
 
       await this.router.navigateByUrl('/dashboard');
     } catch (error) {
-      this.errorMessage =
-        error instanceof Error
-          ? error.message
-          : 'No fue posible iniciar sesión.';
+      this.errorMessage = error instanceof Error ? error.message : 'No fue posible iniciar sesión.';
     } finally {
       this.isLoading = false;
     }

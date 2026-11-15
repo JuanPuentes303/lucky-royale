@@ -1,8 +1,8 @@
+import { Injectable, inject } from '@angular/core';
+import { BehaviorSubject, type Observable } from 'rxjs';
 
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import type { UserProfile } from '../../shared/interfaces/user.interface';
 
-import { UserProfile } from '../../shared/interfaces/user.interface';
 import { StorageService } from './storage.service';
 
 interface StoredUser extends UserProfile {
@@ -14,22 +14,16 @@ interface StoredUser extends UserProfile {
   providedIn: 'root',
 })
 export class AuthService {
-
   private readonly usersKey = 'lucky-royale.users';
   private readonly sessionKey = 'lucky-royale.session';
 
-  private readonly currentUserSubject: BehaviorSubject<UserProfile | null>;
+  private readonly storageService = inject(StorageService);
 
-  public readonly currentUser$: Observable<UserProfile | null>;
+  private readonly currentUserSubject = new BehaviorSubject<UserProfile | null>(
+    this.storageService.get<UserProfile>(this.sessionKey),
+  );
 
-  constructor(
-    private readonly storageService: StorageService
-  ) {
-    this.currentUserSubject = new BehaviorSubject<UserProfile | null>(
-      this.storageService.get<UserProfile>(this.sessionKey)
-    );
-    this.currentUser$ = this.currentUserSubject.asObservable();
-  }
+  public readonly currentUser$: Observable<UserProfile | null> = this.currentUserSubject.asObservable();
 
   public get currentUser(): UserProfile | null {
     return this.currentUserSubject.value;
@@ -39,23 +33,16 @@ export class AuthService {
     return this.currentUser !== null;
   }
 
-  public async register(
-    name: string,
-    email: string,
-    password: string
-  ): Promise<UserProfile> {
-
+  public async register(name: string, email: string, password: string): Promise<UserProfile> {
     const normalizedEmail = email.trim().toLowerCase();
 
     if (!name.trim() || !normalizedEmail || password.length < 8) {
       throw new Error('Completa los datos correctamente.');
     }
 
-    const users = this.storageService.get<StoredUser[]>(
-      this.usersKey
-    ) ?? [];
+    const users = this.storageService.get<StoredUser[]>(this.usersKey) ?? [];
 
-    if (users.some(user => user.email === normalizedEmail)) {
+    if (users.some((user) => user.email === normalizedEmail)) {
       throw new Error('Este correo ya tiene una cuenta.');
     }
 
@@ -79,20 +66,12 @@ export class AuthService {
     return profile;
   }
 
-  public async login(
-    email: string,
-    password: string
-  ): Promise<UserProfile> {
-
+  public async login(email: string, password: string): Promise<UserProfile> {
     const normalizedEmail = email.trim().toLowerCase();
 
-    const users = this.storageService.get<StoredUser[]>(
-      this.usersKey
-    ) ?? [];
+    const users = this.storageService.get<StoredUser[]>(this.usersKey) ?? [];
 
-    const user = users.find(
-      item => item.email === normalizedEmail
-    );
+    const user = users.find((item) => item.email === normalizedEmail);
 
     if (!user) {
       throw new Error('Correo o contraseña incorrectos.');
@@ -132,18 +111,10 @@ export class AuthService {
     };
   }
 
-  private async hashPassword(
-    password: string,
-    salt: Uint8Array
-  ): Promise<string> {
-
-    const passwordKey = await crypto.subtle.importKey(
-      'raw',
-      new TextEncoder().encode(password),
-      'PBKDF2',
-      false,
-      ['deriveBits']
-    );
+  private async hashPassword(password: string, salt: Uint8Array): Promise<string> {
+    const passwordKey = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, [
+      'deriveBits',
+    ]);
 
     const saltBuffer = new ArrayBuffer(salt.byteLength);
     new Uint8Array(saltBuffer).set(salt);
@@ -156,11 +127,11 @@ export class AuthService {
         hash: 'SHA-256',
       },
       passwordKey,
-      256
+      256,
     );
 
     return Array.from(new Uint8Array(hash))
-      .map(byte => byte.toString(16).padStart(2, '0'))
+      .map((byte) => byte.toString(16).padStart(2, '0'))
       .join('');
   }
 
@@ -169,10 +140,7 @@ export class AuthService {
   }
 
   private fromBase64(value: string): Uint8Array {
-    return Uint8Array.from(
-      atob(value),
-      character => character.charCodeAt(0)
-    );
+    return Uint8Array.from(atob(value), (character) => character.charCodeAt(0));
   }
 
   private safeEquals(first: string, second: string): boolean {

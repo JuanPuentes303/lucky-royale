@@ -1,30 +1,17 @@
-
 <ion-content class="casino-content">
-
   <main class="baccarat-container">
-
     <header class="game-header">
-
-      <ion-button
-        fill="clear"
-        color="primary"
-        (click)="goToDashboard()"
-      >
-        ← Volver al menú
-      </ion-button>
+      <ion-button fill="clear" color="primary" (click)="goToDashboard()"> ← Volver al menú </ion-button>
 
       <span class="eyebrow">LUCKY ROYALE ORIGINAL</span>
 
       <h1>ROYAL BACCARAT</h1>
 
       <p>Punto Banco · Elegancia y precisión</p>
-
     </header>
 
     <ion-card class="baccarat-table">
-
       <ion-card-content>
-
         <div class="table-decoration">
           <span>♠</span>
           <span>♦</span>
@@ -39,34 +26,23 @@
 
         <!-- JUGADOR -->
         <section class="hand-section">
-
           <div class="hand-header">
             <h2>JUGADOR</h2>
-            <span class="hand-score">
-              {{ playerScore }} PUNTOS
-            </span>
+            <span class="hand-score"> {{ playerScore }} PUNTOS </span>
           </div>
 
           <div class="cards-container">
-
             @for (card of playerCards; track card.rank + card.suit) {
 
-              <div
-                class="playing-card"
-                [class.red-card]="card.color === 'red'"
-              >
-                <span class="card-rank">{{ card.rank }}</span>
-                <span class="card-suit">{{ card.suit }}</span>
-              </div>
+            <div class="playing-card" [class.red-card]="card.color === 'red'">
+              <span class="card-rank">{{ card.rank }}</span>
+              <span class="card-suit">{{ card.suit }}</span>
+            </div>
 
+            } @if (playerCards.length === 0) {
+            <p class="empty-hand">Esperando las cartas...</p>
             }
-
-            @if (playerCards.length === 0) {
-              <p class="empty-hand">Esperando las cartas...</p>
-            }
-
           </div>
-
         </section>
 
         <!-- SEPARADOR -->
@@ -76,96 +52,81 @@
 
         <!-- BANCA -->
         <section class="hand-section">
-
           <div class="hand-header">
             <h2>BANCA</h2>
-            <span class="hand-score">
-              {{ bankerScore }} PUNTOS
-            </span>
+            <span class="hand-score"> {{ bankerScore }} PUNTOS </span>
           </div>
 
           <div class="cards-container">
-
             @for (card of bankerCards; track card.rank + card.suit) {
 
-              <div
-                class="playing-card"
-                [class.red-card]="card.color === 'red'"
-              >
-                <span class="card-rank">{{ card.rank }}</span>
-                <span class="card-suit">{{ card.suit }}</span>
-              </div>
+            <div class="playing-card" [class.red-card]="card.color === 'red'">
+              <span class="card-rank">{{ card.rank }}</span>
+              <span class="card-suit">{{ card.suit }}</span>
+            </div>
 
+            } @if (bankerCards.length === 0) {
+            <p class="empty-hand">Esperando las cartas...</p>
             }
-
-            @if (bankerCards.length === 0) {
-              <p class="empty-hand">Esperando las cartas...</p>
-            }
-
           </div>
-
         </section>
 
         <!-- RESULTADO -->
         @if (hasPlayed) {
 
-          <div
-            class="winning-result"
-            [class.player-wins]="resultSide === 'player'"
-            [class.banker-wins]="resultSide === 'banker'"
-            [class.tie-wins]="resultSide === 'tie'"
-          >
-            <span>RESULTADO FINAL</span>
-            <strong>{{ resultLabel }}</strong>
-          </div>
+        <div
+          class="winning-result"
+          [class.player-wins]="resultSide === 'player'"
+          [class.banker-wins]="resultSide === 'banker'"
+          [class.tie-wins]="resultSide === 'tie'"
+        >
+          <span>RESULTADO FINAL</span>
+          <strong>{{ resultLabel }}</strong>
+        </div>
 
         }
 
         <!-- PREDICCIÓN -->
         @if (!hasPlayed) {
 
-          <section class="prediction-section">
+        <section class="prediction-section">
+          <h3>SELECCIONA TU PREDICCIÓN</h3>
 
-            <h3>SELECCIONA TU PREDICCIÓN</h3>
+          <div class="prediction-grid">
+            <button
+              type="button"
+              class="prediction-option player-option"
+              [class.selected]="prediction === 'player'"
+              [disabled]="isPlaying"
+              (click)="selectPrediction('player')"
+            >
+              <span>♠</span>
+              <strong>JUGADOR</strong>
+            </button>
 
-            <div class="prediction-grid">
+            <button
+              type="button"
+              class="prediction-option banker-option"
+              [class.selected]="prediction === 'banker'"
+              [disabled]="isPlaying"
+              (click)="selectPrediction('banker')"
+            >
+              <span>♦</span>
+              <strong>BANCA</strong>
+            </button>
 
-              <button
-                type="button"
-                class="prediction-option player-option"
-                [class.selected]="prediction === 'player'"
-                [disabled]="isPlaying"
-                (click)="selectPrediction('player')"
-              >
-                <span>♠</span>
-                <strong>JUGADOR</strong>
-              </button>
-
-              <button
-                type="button"
-                class="prediction-option banker-option"
-                [class.selected]="prediction === 'banker'"
-                [disabled]="isPlaying"
-                (click)="selectPrediction('banker')"
-              >
-                <span>♦</span>
-                <strong>BANCA</strong>
-              </button>
-
-              <button
-                type="button"
-                class="prediction-option tie-option"
-                [class.selected]="prediction === 'tie'"
-                [disabled]="isPlaying"
-                (click)="selectPrediction('tie')"
-              >
-                <span>♛</span>
-                <strong>EMPATE</strong>
-              </button>
-
-            </div>
-
-          </section>
+            <button
+              type="button"
+              class="prediction-option tie-option"
+              [class.selected]="prediction === 'tie'"
+              [disabled]="isPlaying"
+              (click)="selectPrediction('tie')"
+            >
+              <span>♛</span>
+              <strong>EMPATE</strong>
+            </button>
+          </div>
+        </section>
 
         }
 
@@ -182,30 +143,18 @@
         <!-- ACCIONES -->
         @if (!hasPlayed) {
 
-          <ion-button
-            expand="block"
-            class="action-button"
-            [disabled]="!prediction || isPlaying"
-            (click)="startRound()"
-          >
-            {{ isPlaying ? 'REPARTIENDO CARTAS...' : 'INICIAR PARTIDA' }}
-          </ion-button>
+        <ion-button expand="block" class="action-button" [disabled]="!prediction || isPlaying" (click)="startRound()">
+          {{ isPlaying ? 'REPARTIENDO CARTAS...' : 'INICIAR PARTIDA' }}
+        </ion-button>
 
         } @else {
 
-          <ion-button
-            expand="block"
-            class="action-button"
-            (click)="playAgain()"
-          >
-            VOLVER A JUGAR
-          </ion-button>
+        <ion-button expand="block" class="action-button" (click)="playAgain()"> VOLVER A JUGAR </ion-button>
 
         }
 
         <!-- REGLAS -->
         <section class="rules-panel">
-
           <h3>REGLAS DEL BACARÁ</h3>
 
           <div class="rule-row">
@@ -232,23 +181,15 @@
             <span>05</span>
             <strong>8 o 9 natural detiene el reparto</strong>
           </div>
-
         </section>
 
         <p class="game-instructions">
-          Selecciona quién crees que tendrá la puntuación más alta.
-          La banca y el jugador seguirán las reglas automáticas
-          de Punto Banco.
+          Selecciona quién crees que tendrá la puntuación más alta. La banca y el jugador seguirán las reglas
+          automáticas de Punto Banco.
         </p>
-
       </ion-card-content>
-
     </ion-card>
 
-    <footer class="game-footer">
-      LUCKY ROYALE · ROYAL BACCARAT
-    </footer>
-
+    <footer class="game-footer">LUCKY ROYALE · ROYAL BACCARAT</footer>
   </main>
-
 </ion-content>

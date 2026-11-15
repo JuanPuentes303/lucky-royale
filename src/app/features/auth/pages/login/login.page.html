@@ -1,4 +1,3 @@
-
 <ion-content class="casino-content">
   <main class="auth-container">
     <section class="auth-brand">
@@ -15,19 +14,11 @@
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <ion-item>
             <ion-label position="stacked">Correo electrónico</ion-label>
-            <ion-input
-              type="email"
-              formControlName="email"
-              placeholder="correo@ejemplo.com"
-              autocomplete="email"
-            />
+            <ion-input type="email" formControlName="email" placeholder="correo@ejemplo.com" autocomplete="email" />
           </ion-item>
 
-          @if (loginForm.controls.email.touched &&
-          loginForm.controls.email.invalid) {
-            <ion-note color="danger">
-              Ingresa un correo electrónico válido.
-            </ion-note>
+          @if (loginForm.controls.email.touched && loginForm.controls.email.invalid) {
+          <ion-note color="danger"> Ingresa un correo electrónico válido. </ion-note>
           }
 
           <ion-item>
@@ -40,22 +31,13 @@
             />
           </ion-item>
 
-          @if (loginForm.controls.password.touched &&
-          loginForm.controls.password.invalid) {
-            <ion-note color="danger">
-              La contraseña es obligatoria.
-            </ion-note>
+          @if (loginForm.controls.password.touched && loginForm.controls.password.invalid) {
+          <ion-note color="danger"> La contraseña es obligatoria. </ion-note>
+          } @if (errorMessage) {
+          <p class="error-message">{{ errorMessage }}</p>
           }
 
-          @if (errorMessage) {
-            <p class="error-message">{{ errorMessage }}</p>
-          }
-
-          <ion-button
-            type="submit"
-            expand="block"
-            [disabled]="isLoading"
-          >
+          <ion-button type="submit" expand="block" [disabled]="isLoading">
             {{ isLoading ? 'Ingresando...' : 'Iniciar sesión' }}
           </ion-button>
         </form>

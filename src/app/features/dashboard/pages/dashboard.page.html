@@ -1,29 +1,17 @@
-
 <ion-content class="casino-content">
-
   <main class="dashboard-container">
-
     <!-- ENCABEZADO -->
     <header class="dashboard-header">
-
       <div class="brand">
         <span class="brand-symbol">♠ ♥ ♦ ♣</span>
         <span class="brand-name">LUCKY ROYALE</span>
       </div>
 
-      <ion-button
-        fill="outline"
-        color="primary"
-        (click)="logout()"
-      >
-        Cerrar sesión
-      </ion-button>
-
+      <ion-button fill="outline" color="primary" (click)="logout()"> Cerrar sesión </ion-button>
     </header>
 
     <!-- BIENVENIDA -->
     <section class="welcome-section">
-
       <div class="welcome-text">
         <span class="eyebrow">TU ESPACIO DE JUEGO</span>
 
@@ -32,164 +20,87 @@
           <span>{{ userName }}</span>
         </h1>
 
-        <p>
-          Elige tu juego favorito y disfruta de la experiencia Lucky Royale.
-        </p>
+        <p>Elige tu juego favorito y disfruta de la experiencia Lucky Royale.</p>
       </div>
 
-      <div class="user-avatar" aria-label="Inicial del usuario">
-        {{ userInitial }}
-      </div>
-
+      <div class="user-avatar" aria-label="Inicial del usuario">{{ userInitial }}</div>
     </section>
 
     <!-- SECCIÓN DE JUEGOS -->
     <section class="games-section">
-
       <div class="section-heading">
         <div>
           <span class="eyebrow">NUESTRA COLECCIÓN</span>
           <h2>Explora los juegos</h2>
         </div>
 
-        <ion-chip color="primary">
-          {{ games.length }} juegos
-        </ion-chip>
+        <ion-chip color="primary"> {{ games.length }} juegos </ion-chip>
       </div>
 
       <div class="games-grid">
-
         @for (game of games; track game.id) {
 
-          <ion-card class="game-card">
+        <ion-card class="game-card">
+          <ion-card-content>
+            <div class="game-card-top">
+              <div class="game-symbol">{{ gameSymbols[game.id] }}</div>
 
-            <ion-card-content>
+              @if ( game.id === 'dice' || game.id === 'roulette' || game.id === 'slots' || game.id === 'blackjack' ||
+              game.id === 'poker' || game.id === 'baccarat' ) {
+              <ion-chip color="success">Disponible</ion-chip>
+              } @else {
+              <ion-chip color="warning">Próximamente</ion-chip>
+              }
+            </div>
 
-              <div class="game-card-top">
+            <h3>{{ game.title }}</h3>
 
-                <div class="game-symbol">
-                  {{ gameSymbols[game.id] }}
-                </div>
+            <p>{{ game.description }}</p>
 
-                @if (
-                  game.id === 'dice' ||
-                  game.id === 'roulette' ||
-                  game.id === 'slots' ||
-                  game.id === 'blackjack' ||
-                  game.id === 'poker' ||
-                  game.id === 'baccarat'
-                ) {
-                  <ion-chip color="success">Disponible</ion-chip>
-                } @else {
-                  <ion-chip color="warning">Próximamente</ion-chip>
-                }
+            <div class="game-card-footer">
+              @if (game.id === 'dice') {
+              <button type="button" class="play-link" (click)="openDice()">Jugar ahora →</button>
 
-              </div>
+              } @else if (game.id === 'roulette') {
+              <button type="button" class="play-link" (click)="openRoulette()">Jugar ahora →</button>
 
-              <h3>{{ game.title }}</h3>
+              } @else if (game.id === 'slots') {
+              <button type="button" class="play-link" (click)="openSlots()">Jugar ahora →</button>
 
-              <p>{{ game.description }}</p>
+              } @else if (game.id === 'blackjack') {
+              <button type="button" class="play-link" (click)="openBlackjack()">Jugar ahora →</button>
 
-              
-              <div class="game-card-footer">
+              } @else if (game.id === 'poker') {
+              <button type="button" class="play-link" (click)="openPoker()">Jugar ahora →</button>
 
-                @if (game.id === 'dice') {
-                  <button
-                    type="button"
-                    class="play-link"
-                    (click)="openDice()"
-                  >
-                    Jugar ahora →
-                  </button>
+              } @else if (game.id === 'baccarat') {
+              <button type="button" class="play-link" (click)="openBaccarat()">Jugar ahora →</button>
 
-                } @else if (game.id === 'roulette') {
-                  <button
-                    type="button"
-                    class="play-link"
-                    (click)="openRoulette()"
-                  >
-                    Jugar ahora →
-                  </button>
-
-                } @else if (game.id === 'slots') {
-                  <button
-                    type="button"
-                    class="play-link"
-                    (click)="openSlots()"
-                  >
-                    Jugar ahora →
-                  </button>
-
-                } @else if (game.id === 'blackjack') {
-                  <button
-                    type="button"
-                    class="play-link"
-                    (click)="openBlackjack()"
-                  >
-                    Jugar ahora →
-                  </button>
-
-                } @else if (game.id === 'poker') {
-                  <button
-                    type="button"
-                    class="play-link"
-                    (click)="openPoker()"
-                  >
-                    Jugar ahora →
-                  </button>
-
-                } @else if (game.id === 'baccarat') {
-                  <button
-                    type="button"
-                    class="play-link"
-                    (click)="openBaccarat()"
-                  >
-                    Jugar ahora →
-                  </button>
-
-                } @else {
-                  <span>Próximamente</span>
-                  <span class="game-arrow">→</span>
-                }
-
-              </div>
-
-
-            </ion-card-content>
-
-          </ion-card>
+              } @else {
+              <span>Próximamente</span>
+              <span class="game-arrow">→</span>
+              }
+            </div>
+          </ion-card-content>
+        </ion-card>
 
         }
-
       </div>
-
     </section>
 
     <!-- PERFIL -->
     <section class="profile-section">
-
       <div class="profile-information">
-
         <span class="profile-symbol">♛</span>
 
         <div>
           <span class="eyebrow">TU CUENTA</span>
           <h2>Perfil y estadísticas</h2>
-          <p>
-            Consulta tu actividad, resultados e historial de partidas.
-          </p>
+          <p>Consulta tu actividad, resultados e historial de partidas.</p>
         </div>
-
       </div>
 
-      <ion-button
-        fill="outline"
-        color="primary"
-        (click)="openProfile()"
-      >
-        Ver mi perfil →
-      </ion-button>
-
+      <ion-button fill="outline" color="primary" (click)="openProfile()"> Ver mi perfil → </ion-button>
     </section>
 
     <!-- PIE DE PÁGINA -->
@@ -197,7 +108,5 @@
       <span>LUCKY ROYALE</span>
       <p>Entretenimiento y juegos recreativos.</p>
     </footer>
-
   </main>
-
 </ion-content>

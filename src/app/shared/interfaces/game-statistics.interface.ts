@@ -1,4 +1,4 @@
-import { GameId } from './game.interface';
+import type { GameId } from './game.interface';
 
 export interface GameStatistics {
   gameId: GameId;

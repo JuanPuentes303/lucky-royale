@@ -1,13 +1,6 @@
-
 import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
-
-import {
-  IonButton,
-  IonCard,
-  IonCardContent,
-  IonContent,
-} from '@ionic/angular';
+import { IonButton, IonCard, IonCardContent, IonContent } from '@ionic/angular';
 
 import { AuthService } from '../../../core/services/auth.service';
 import { StatisticsService } from '../../../core/services/statistics.service';
@@ -19,12 +12,7 @@ type SlotsOutcome = 'win' | 'loss' | 'draw';
   standalone: true,
   templateUrl: './slots.page.html',
   styleUrl: './slots.page.scss',
-  imports: [
-    IonContent,
-    IonButton,
-    IonCard,
-    IonCardContent,
-  ],
+  imports: [IonContent, IonButton, IonCard, IonCardContent],
 })
 export class SlotsPage {
   private readonly authService = inject(AuthService);
@@ -33,15 +21,7 @@ export class SlotsPage {
   private readonly changeDetector = inject(ChangeDetectorRef);
   private currentRoundId: string | null = null;
 
-  public readonly symbols = [
-    '🍒',
-    '🍋',
-    '🍉',
-    '🔔',
-    '⭐',
-    '💎',
-    '7️⃣',
-  ];
+  public readonly symbols = ['🍒', '🍋', '🍉', '🔔', '⭐', '💎', '7️⃣'];
 
   public reels: string[] = ['🍒', '🍋', '🔔'];
 
@@ -52,8 +32,7 @@ export class SlotsPage {
 
   public outcome: SlotsOutcome | null = null;
 
-  public resultMessage =
-    '¡Prepárate! Pulsa el botón para iniciar los carretes.';
+  public resultMessage = '¡Prepárate! Pulsa el botón para iniciar los carretes.';
 
   private getRandomSymbol(): string {
     const index = Math.floor(Math.random() * this.symbols.length);
@@ -73,11 +52,7 @@ export class SlotsPage {
 
     this.resultMessage = '¡Los carretes están girando!';
 
-    const winningSymbols = [
-      this.getRandomSymbol(),
-      this.getRandomSymbol(),
-      this.getRandomSymbol(),
-    ];
+    const winningSymbols = [this.getRandomSymbol(), this.getRandomSymbol(), this.getRandomSymbol()];
 
     this.spinningReels = [true, true, true];
 
@@ -85,17 +60,13 @@ export class SlotsPage {
 
     try {
       // Permitir que el navegador renderice la animación.
-      await new Promise<void>(resolve =>
-        requestAnimationFrame(() => resolve()),
-      );
+      await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
       const stopDelays = [900, 650, 650];
 
       // Detener cada carrete de forma independiente.
       for (let index = 0; index < 3; index++) {
-        await new Promise(resolve =>
-          setTimeout(resolve, stopDelays[index]),
-        );
+        await new Promise((resolve) => setTimeout(resolve, stopDelays[index]));
 
         this.reels[index] = winningSymbols[index];
         this.spinningReels[index] = false;
@@ -107,20 +78,13 @@ export class SlotsPage {
 
       if (first === second && second === third) {
         this.outcome = 'win';
-        this.resultMessage =
-          '¡Tres símbolos iguales! ¡Excelente resultado!';
-      } else if (
-        first === second ||
-        first === third ||
-        second === third
-      ) {
+        this.resultMessage = '¡Tres símbolos iguales! ¡Excelente resultado!';
+      } else if (first === second || first === third || second === third) {
         this.outcome = 'draw';
-        this.resultMessage =
-          '¡Dos símbolos iguales! Has conseguido un empate.';
+        this.resultMessage = '¡Dos símbolos iguales! Has conseguido un empate.';
       } else {
         this.outcome = 'loss';
-        this.resultMessage =
-          'Esta vez no hubo coincidencias. ¡Puedes intentarlo de nuevo!';
+        this.resultMessage = 'Esta vez no hubo coincidencias. ¡Puedes intentarlo de nuevo!';
       }
 
       this.hasPlayed = true;
@@ -136,7 +100,6 @@ export class SlotsPage {
           this.currentRoundId ?? undefined,
         );
       }
-
     } finally {
       this.spinningReels = [false, false, false];
       this.isSpinning = false;
@@ -157,8 +120,7 @@ export class SlotsPage {
     this.hasPlayed = false;
     this.outcome = null;
 
-    this.resultMessage =
-      '¡Prepárate! Pulsa el botón para iniciar los carretes.';
+    this.resultMessage = '¡Prepárate! Pulsa el botón para iniciar los carretes.';
   }
 
   public goToDashboard(): void {

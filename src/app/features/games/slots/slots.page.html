@@ -1,30 +1,17 @@
-
 <ion-content class="casino-content">
-
   <main class="slots-container">
-
     <header class="game-header">
-
-      <ion-button
-        fill="clear"
-        color="primary"
-        (click)="goToDashboard()"
-      >
-        ← Volver al menú
-      </ion-button>
+      <ion-button fill="clear" color="primary" (click)="goToDashboard()"> ← Volver al menú </ion-button>
 
       <span class="eyebrow">LUCKY ROYALE ORIGINAL</span>
 
       <h1>ROYAL SLOTS</h1>
 
       <p>Los símbolos están listos. ¿Coincidirán?</p>
-
     </header>
 
     <ion-card class="slots-machine">
-
       <ion-card-content>
-
         <div class="machine-decoration">
           <span>♠</span>
           <span>♦</span>
@@ -50,33 +37,21 @@
 
         <!-- CARRETES -->
         <div class="slot-screen">
-
           <div class="slot-reels">
-
             @for (symbol of reels; track $index) {
 
-              <div
-                class="slot-reel"
-                [class.spinning]="spinningReels[$index]"
-              >
-
-                <span class="reel-symbol">
-                  {{ symbol }}
-                </span>
-
-              </div>
+            <div class="slot-reel" [class.spinning]="spinningReels[$index]">
+              <span class="reel-symbol"> {{ symbol }} </span>
+            </div>
 
             }
-
           </div>
 
           <div class="payline"></div>
-
         </div>
 
         <!-- COMBINACIONES -->
         <section class="combinations">
-
           <h2>COMBINACIONES</h2>
 
           <div class="combination-row">
@@ -108,7 +83,6 @@
 
             <strong>Sin coincidencias = Derrota</strong>
           </div>
-
         </section>
 
         <!-- RESULTADO -->
@@ -118,49 +92,29 @@
           [class.draw]="outcome === 'draw'"
           [class.loss]="outcome === 'loss'"
         >
-
           {{ resultMessage }}
-
         </div>
 
         <!-- BOTÓN -->
         @if (!hasPlayed) {
 
-          <ion-button
-            expand="block"
-            class="spin-button"
-            [disabled]="isSpinning"
-            (click)="spinSlots()"
-          >
-            {{ isSpinning ? 'GIRANDO CARRETES...' : 'GIRAR CARRETES' }}
-          </ion-button>
+        <ion-button expand="block" class="spin-button" [disabled]="isSpinning" (click)="spinSlots()">
+          {{ isSpinning ? 'GIRANDO CARRETES...' : 'GIRAR CARRETES' }}
+        </ion-button>
 
         } @else {
 
-          <ion-button
-            expand="block"
-            class="spin-button"
-            (click)="playAgain()"
-          >
-            VOLVER A JUGAR
-          </ion-button>
+        <ion-button expand="block" class="spin-button" (click)="playAgain()"> VOLVER A JUGAR </ion-button>
 
         }
 
         <p class="game-instructions">
-          Observa los tres carretes. Si los tres símbolos coinciden,
-          obtendrás una victoria. Dos símbolos iguales representan
-          un empate.
+          Observa los tres carretes. Si los tres símbolos coinciden, obtendrás una victoria. Dos símbolos iguales
+          representan un empate.
         </p>
-
       </ion-card-content>
-
     </ion-card>
 
-    <footer class="game-footer">
-      LUCKY ROYALE · ROYAL SLOTS
-    </footer>
-
+    <footer class="game-footer">LUCKY ROYALE · ROYAL SLOTS</footer>
   </main>
-
 </ion-content>

@@ -1,30 +1,17 @@
-
 <ion-content class="casino-content">
-
   <main class="poker-container">
-
     <header class="game-header">
-
-      <ion-button
-        fill="clear"
-        color="primary"
-        (click)="goToDashboard()"
-      >
-        ← Volver al menú
-      </ion-button>
+      <ion-button fill="clear" color="primary" (click)="goToDashboard()"> ← Volver al menú </ion-button>
 
       <span class="eyebrow">LUCKY ROYALE ORIGINAL</span>
 
       <h1>ROYAL POKER</h1>
 
       <p>Texas Hold'em · Estrategia y combinación de cartas</p>
-
     </header>
 
     <ion-card class="poker-table">
-
       <ion-card-content>
-
         <div class="table-decoration">
           <span>♠</span>
           <span>♦</span>
@@ -32,76 +19,50 @@
           <span>♥</span>
         </div>
 
-        <div class="stage-indicator">
-          {{ stageLabel }}
-        </div>
+        <div class="stage-indicator">{{ stageLabel }}</div>
 
         <!-- OPONENTE -->
         <section class="player-section">
-
           <div class="section-heading">
             <h2>OPONENTE</h2>
-            <span>
-              {{ opponentHandName }}
-            </span>
+            <span> {{ opponentHandName }} </span>
           </div>
 
           <div class="cards-container">
+            @for (card of opponentCards; track card.rank + card.suit) { @if (opponentRevealed) {
 
-            @for (card of opponentCards; track card.rank + card.suit) {
+            <div class="playing-card" [class.red-card]="card.color === 'red'">
+              <span class="card-rank">{{ card.rank }}</span>
+              <span class="card-suit">{{ card.suit }}</span>
+            </div>
 
-              @if (opponentRevealed) {
+            } @else {
 
-                <div
-                  class="playing-card"
-                  [class.red-card]="card.color === 'red'"
-                >
-                  <span class="card-rank">{{ card.rank }}</span>
-                  <span class="card-suit">{{ card.suit }}</span>
-                </div>
+            <div class="playing-card card-back">
+              <span>♛</span>
+              <strong>LR</strong>
+            </div>
 
-              } @else {
-
-                <div class="playing-card card-back">
-                  <span>♛</span>
-                  <strong>LR</strong>
-                </div>
-
-              }
-
-            }
-
+            } }
           </div>
-
         </section>
 
         <!-- CARTAS COMUNITARIAS -->
         <section class="community-section">
-
           <h2>CARTAS COMUNITARIAS</h2>
 
           <div class="community-cards">
-
             @for (card of communityCards; track card.rank + card.suit) {
 
-              <div
-                class="playing-card"
-                [class.red-card]="card.color === 'red'"
-              >
-                <span class="card-rank">{{ card.rank }}</span>
-                <span class="card-suit">{{ card.suit }}</span>
-              </div>
+            <div class="playing-card" [class.red-card]="card.color === 'red'">
+              <span class="card-rank">{{ card.rank }}</span>
+              <span class="card-suit">{{ card.suit }}</span>
+            </div>
 
+            } @if (communityCards.length === 0) {
+            <p class="empty-board">Las cartas comunitarias aparecerán aquí.</p>
             }
-
-            @if (communityCards.length === 0) {
-              <p class="empty-board">
-                Las cartas comunitarias aparecerán aquí.
-              </p>
-            }
-
           </div>
-
         </section>
 
         <div class="table-divider">
@@ -110,34 +71,23 @@
 
         <!-- JUGADOR -->
         <section class="player-section">
-
           <div class="section-heading">
             <h2>TU MANO</h2>
             <span>{{ playerHandName }}</span>
           </div>
 
           <div class="cards-container">
-
             @for (card of playerCards; track card.rank + card.suit) {
 
-              <div
-                class="playing-card"
-                [class.red-card]="card.color === 'red'"
-              >
-                <span class="card-rank">{{ card.rank }}</span>
-                <span class="card-suit">{{ card.suit }}</span>
-              </div>
+            <div class="playing-card" [class.red-card]="card.color === 'red'">
+              <span class="card-rank">{{ card.rank }}</span>
+              <span class="card-suit">{{ card.suit }}</span>
+            </div>
 
+            } @if (playerCards.length === 0) {
+            <p class="empty-board">Tus cartas aparecerán aquí.</p>
             }
-
-            @if (playerCards.length === 0) {
-              <p class="empty-board">
-                Tus cartas aparecerán aquí.
-              </p>
-            }
-
           </div>
-
         </section>
 
         <!-- RESULTADO -->
@@ -153,51 +103,24 @@
         <!-- ACCIONES -->
         @if (stage === 'ready') {
 
-          <ion-button
-            expand="block"
-            class="action-button"
-            (click)="startGame()"
-          >
-            REPARTIR CARTAS
-          </ion-button>
+        <ion-button expand="block" class="action-button" (click)="startGame()"> REPARTIR CARTAS </ion-button>
 
         } @else if (isRoundActive) {
 
-            <div class="poker-actions">
+        <div class="poker-actions">
+          <ion-button expand="block" class="action-button" (click)="advanceRound()"> {{ actionLabel }} </ion-button>
 
-                <ion-button
-                expand="block"
-                class="action-button"
-                (click)="advanceRound()"
-                >
-                {{ actionLabel }}
-                </ion-button>
-
-                <ion-button
-                expand="block"
-                class="fold-button"
-                (click)="fold()"
-                >
-                RETIRARSE
-                </ion-button>
-
-            </div>
+          <ion-button expand="block" class="fold-button" (click)="fold()"> RETIRARSE </ion-button>
+        </div>
 
         } @else {
 
-          <ion-button
-            expand="block"
-            class="action-button"
-            (click)="playAgain()"
-          >
-            VOLVER A JUGAR
-          </ion-button>
+        <ion-button expand="block" class="action-button" (click)="playAgain()"> VOLVER A JUGAR </ion-button>
 
         }
 
         <!-- REGLAS -->
         <section class="rules-panel">
-
           <h3>CLASIFICACIÓN DE MANOS</h3>
 
           <div class="rule-row">
@@ -249,23 +172,15 @@
             <span>10</span>
             <strong>Carta alta</strong>
           </div>
-
         </section>
 
         <p class="game-instructions">
-          El objetivo es formar la mejor combinación posible
-          utilizando tus dos cartas privadas y las cinco
-          cartas comunitarias.
+          El objetivo es formar la mejor combinación posible utilizando tus dos cartas privadas y las cinco cartas
+          comunitarias.
         </p>
-
       </ion-card-content>
-
     </ion-card>
 
-    <footer class="game-footer">
-      LUCKY ROYALE · TEXAS HOLD'EM
-    </footer>
-
+    <footer class="game-footer">LUCKY ROYALE · TEXAS HOLD'EM</footer>
   </main>
-
 </ion-content>

@@ -1,13 +1,6 @@
-
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-
-import {
-  IonButton,
-  IonCard,
-  IonCardContent,
-  IonContent,
-} from '@ionic/angular';
+import { IonButton, IonCard, IonCardContent, IonContent } from '@ionic/angular';
 
 import { AuthService } from '../../../core/services/auth.service';
 import { StatisticsService } from '../../../core/services/statistics.service';
@@ -25,12 +18,7 @@ type BlackjackOutcome = 'win' | 'loss' | 'draw';
   standalone: true,
   templateUrl: './blackjack.page.html',
   styleUrl: './blackjack.page.scss',
-  imports: [
-    IonContent,
-    IonButton,
-    IonCard,
-    IonCardContent,
-  ],
+  imports: [IonContent, IonButton, IonCard, IonCardContent],
 })
 export class BlackjackPage {
   private readonly authService = inject(AuthService);
@@ -49,8 +37,7 @@ export class BlackjackPage {
 
   public outcome: BlackjackOutcome | null = null;
 
-  public resultMessage =
-    'Consigue 21 puntos sin pasarte. ¡Que comience la partida!';
+  public resultMessage = 'Consigue 21 puntos sin pasarte. ¡Que comience la partida!';
 
   public get playerTotal(): number {
     return this.calculateHand(this.playerCards);
@@ -61,28 +48,18 @@ export class BlackjackPage {
   }
 
   public get visibleDealerTotal(): number {
-    return this.dealerCards.length
-      ? this.calculateHand([this.dealerCards[0]])
-      : 0;
+    return this.dealerCards.length ? this.calculateHand([this.dealerCards[0]]) : 0;
   }
 
   private createDeck(): PlayingCard[] {
     const suits = ['♠', '♥', '♦', '♣'];
-    const ranks = [
-      'A', '2', '3', '4', '5', '6', '7',
-      '8', '9', '10', 'J', 'Q', 'K',
-    ];
+    const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 
     const cards: PlayingCard[] = [];
 
     for (const suit of suits) {
       for (const rank of ranks) {
-        const value =
-          rank === 'A'
-            ? 11
-            : ['J', 'Q', 'K'].includes(rank)
-              ? 10
-              : Number(rank);
+        const value = rank === 'A' ? 11 : ['J', 'Q', 'K'].includes(rank) ? 10 : Number(rank);
 
         cards.push({ rank, suit, value });
       }
@@ -112,12 +89,9 @@ export class BlackjackPage {
   }
 
   private calculateHand(cards: PlayingCard[]): number {
-    let total = cards.reduce(
-      (sum, card) => sum + card.value,
-      0,
-    );
+    let total = cards.reduce((sum, card) => sum + card.value, 0);
 
-    let aces = cards.filter(card => card.rank === 'A').length;
+    let aces = cards.filter((card) => card.rank === 'A').length;
 
     while (total > 21 && aces > 0) {
       total -= 10;
@@ -154,10 +128,7 @@ export class BlackjackPage {
     this.resultMessage = 'Tu turno. Pide una carta o plántate.';
 
     // Blackjack inicial.
-    if (
-      this.playerTotal === 21 ||
-      this.dealerTotal === 21
-    ) {
+    if (this.playerTotal === 21 || this.dealerTotal === 21) {
       this.finishRound();
     }
   }
@@ -167,10 +138,7 @@ export class BlackjackPage {
       return;
     }
 
-    this.playerCards = [
-      ...this.playerCards,
-      this.drawCard(),
-    ];
+    this.playerCards = [...this.playerCards, this.drawCard()];
 
     if (this.playerTotal > 21) {
       this.finishRound();
@@ -195,10 +163,7 @@ export class BlackjackPage {
 
     // El crupier debe alcanzar al menos 17.
     while (this.dealerTotal < 17) {
-      this.dealerCards = [
-        ...this.dealerCards,
-        this.drawCard(),
-      ];
+      this.dealerCards = [...this.dealerCards, this.drawCard()];
     }
 
     this.dealerRevealed = true;

@@ -1,13 +1,6 @@
-
 import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
-
-import {
-  IonButton,
-  IonCard,
-  IonCardContent,
-  IonContent,
-} from '@ionic/angular';
+import { IonButton, IonCard, IonCardContent, IonContent } from '@ionic/angular';
 
 import { AuthService } from '../../../core/services/auth.service';
 import { StatisticsService } from '../../../core/services/statistics.service';
@@ -20,12 +13,7 @@ type DiceOutcome = 'win' | 'loss' | 'draw';
   standalone: true,
   templateUrl: './dice.page.html',
   styleUrl: './dice.page.scss',
-  imports: [
-    IonContent,
-    IonButton,
-    IonCard,
-    IonCardContent,
-  ],
+  imports: [IonContent, IonButton, IonCard, IonCardContent],
 })
 export class DicePage {
   private readonly authService = inject(AuthService);
@@ -60,68 +48,62 @@ export class DicePage {
     this.resultMessage = '¡Preparado! Lanza los dados.';
   }
 
-  
-public async rollDice(): Promise<void> {
-  if (!this.selectedChoice || this.isRolling || this.hasPlayed) {
-    return;
-  }
-
-  this.currentRoundId = crypto.randomUUID();
-
-  this.isRolling = true;
-  this.hasPlayed = false;
-  this.outcome = null;
-  this.resultMessage = 'Los dados están rodando...';
-
-  try {
-    await new Promise(resolve => setTimeout(resolve, 1200));
-
-    this.diceOne = Math.floor(Math.random() * 6) + 1;
-    this.diceTwo = Math.floor(Math.random() * 6) + 1;
-
-    const sum = this.total;
-
-    let result: DiceOutcome;
-
-    if (sum === 7) {
-      result = 'draw';
-      this.resultMessage = '¡Empate! La suma fue 7.';
-    } else if (
-      (this.selectedChoice === 'high' && sum >= 8) ||
-      (this.selectedChoice === 'low' && sum <= 6)
-    ) {
-      result = 'win';
-      this.resultMessage = '¡Excelente! Acertaste tu predicción.';
-    } else {
-      result = 'loss';
-      this.resultMessage = 'No acertaste esta vez. ¡Inténtalo de nuevo!';
+  public async rollDice(): Promise<void> {
+    if (!this.selectedChoice || this.isRolling || this.hasPlayed) {
+      return;
     }
 
-    this.outcome = result;
-    this.hasPlayed = true;
+    this.currentRoundId = crypto.randomUUID();
 
-    const user = this.authService.currentUser;
+    this.isRolling = true;
+    this.hasPlayed = false;
+    this.outcome = null;
+    this.resultMessage = 'Los dados están rodando...';
 
-    if (user) {
-      this.statisticsService.recordResult(
-        user.id,
-        'dice',
-        result,
-        `Dados: ${this.diceOne} + ${this.diceTwo} = ${sum}. Predicción: ${
-          this.selectedChoice === 'high' ? 'Alta' : 'Baja'
-        }.`,
-        this.currentRoundId,
-      );
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1200));
+
+      this.diceOne = Math.floor(Math.random() * 6) + 1;
+      this.diceTwo = Math.floor(Math.random() * 6) + 1;
+
+      const sum = this.total;
+
+      let result: DiceOutcome;
+
+      if (sum === 7) {
+        result = 'draw';
+        this.resultMessage = '¡Empate! La suma fue 7.';
+      } else if ((this.selectedChoice === 'high' && sum >= 8) || (this.selectedChoice === 'low' && sum <= 6)) {
+        result = 'win';
+        this.resultMessage = '¡Excelente! Acertaste tu predicción.';
+      } else {
+        result = 'loss';
+        this.resultMessage = 'No acertaste esta vez. ¡Inténtalo de nuevo!';
+      }
+
+      this.outcome = result;
+      this.hasPlayed = true;
+
+      const user = this.authService.currentUser;
+
+      if (user) {
+        this.statisticsService.recordResult(
+          user.id,
+          'dice',
+          result,
+          `Dados: ${this.diceOne} + ${this.diceTwo} = ${sum}. Predicción: ${
+            this.selectedChoice === 'high' ? 'Alta' : 'Baja'
+          }.`,
+          this.currentRoundId,
+        );
+      }
+    } finally {
+      this.isRolling = false;
+
+      // Actualizar la interfaz después de la operación asíncrona.
+      this.changeDetector.markForCheck();
     }
-
-  } finally {
-    this.isRolling = false;
-
-    // Actualizar la interfaz después de la operación asíncrona.
-    this.changeDetector.markForCheck();
   }
-}
-
 
   public playAgain(): void {
     if (this.isRolling) {

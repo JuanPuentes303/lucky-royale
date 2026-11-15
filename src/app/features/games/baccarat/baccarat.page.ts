@@ -1,13 +1,6 @@
-
 import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
-
-import {
-  IonButton,
-  IonCard,
-  IonCardContent,
-  IonContent,
-} from '@ionic/angular';
+import { IonButton, IonCard, IonCardContent, IonContent } from '@ionic/angular';
 
 import { AuthService } from '../../../core/services/auth.service';
 import { StatisticsService } from '../../../core/services/statistics.service';
@@ -27,12 +20,7 @@ interface BaccaratCard {
   standalone: true,
   templateUrl: './baccarat.page.html',
   styleUrl: './baccarat.page.scss',
-  imports: [
-    IonContent,
-    IonButton,
-    IonCard,
-    IonCardContent,
-  ],
+  imports: [IonContent, IonButton, IonCard, IonCardContent],
 })
 export class BaccaratPage {
   private readonly authService = inject(AuthService);
@@ -54,8 +42,7 @@ export class BaccaratPage {
   public isPlaying = false;
   public hasPlayed = false;
 
-  public resultMessage =
-    'Selecciona tu predicción para comenzar la partida.';
+  public resultMessage = 'Selecciona tu predicción para comenzar la partida.';
 
   public get playerScore(): number {
     return this.calculateScore(this.playerCards);
@@ -88,28 +75,17 @@ export class BaccaratPage {
   private createDeck(): BaccaratCard[] {
     const suits = ['♠', '♥', '♦', '♣'];
 
-    const ranks = [
-      'A', '2', '3', '4', '5', '6', '7',
-      '8', '9', '10', 'J', 'Q', 'K',
-    ];
+    const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 
-    return suits.flatMap(suit =>
-      ranks.map(rank => {
-        const value =
-          rank === 'A'
-            ? 1
-            : ['10', 'J', 'Q', 'K'].includes(rank)
-              ? 0
-              : Number(rank);
+    return suits.flatMap((suit) =>
+      ranks.map((rank) => {
+        const value = rank === 'A' ? 1 : ['10', 'J', 'Q', 'K'].includes(rank) ? 0 : Number(rank);
 
         return {
           rank,
           value,
           suit,
-          color:
-            suit === '♥' || suit === '♦'
-              ? 'red' as const
-              : 'black' as const,
+          color: suit === '♥' || suit === '♦' ? ('red' as const) : ('black' as const),
         };
       }),
     );
@@ -136,16 +112,11 @@ export class BaccaratPage {
   }
 
   private calculateScore(cards: BaccaratCard[]): number {
-    return cards.reduce(
-      (total, card) => total + card.value,
-      0,
-    ) % 10;
+    return cards.reduce((total, card) => total + card.value, 0) % 10;
   }
 
   private wait(milliseconds: number): Promise<void> {
-    return new Promise(resolve =>
-      setTimeout(resolve, milliseconds),
-    );
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
   }
 
   public selectPrediction(side: BaccaratSide): void {
@@ -154,14 +125,10 @@ export class BaccaratPage {
     }
 
     this.prediction = side;
-    this.resultMessage =
-      `Predicción seleccionada: ${this.predictionLabel}.`;
+    this.resultMessage = `Predicción seleccionada: ${this.predictionLabel}.`;
   }
 
-  private shouldBankerDraw(
-    bankerScore: number,
-    playerThirdCard: number | null,
-  ): boolean {
+  private shouldBankerDraw(bankerScore: number, playerThirdCard: number | null): boolean {
     if (playerThirdCard === null) {
       return bankerScore <= 5;
     }
@@ -232,9 +199,7 @@ export class BaccaratPage {
       const initialBankerScore = this.bankerScore;
 
       // Natural: 8 o 9. Ninguna mano solicita tercera carta.
-      const natural =
-        initialPlayerScore >= 8 ||
-        initialBankerScore >= 8;
+      const natural = initialPlayerScore >= 8 || initialBankerScore >= 8;
 
       let playerThirdCard: number | null = null;
 
@@ -251,12 +216,7 @@ export class BaccaratPage {
         }
 
         // Regla de tercera carta de la banca.
-        if (
-          this.shouldBankerDraw(
-            this.bankerScore,
-            playerThirdCard,
-          )
-        ) {
+        if (this.shouldBankerDraw(this.bankerScore, playerThirdCard)) {
           this.bankerCards.push(this.drawCard());
 
           this.changeDetector.detectChanges();
@@ -274,7 +234,6 @@ export class BaccaratPage {
       }
 
       this.finishRound();
-
     } finally {
       this.isPlaying = false;
       this.changeDetector.detectChanges();
@@ -291,20 +250,15 @@ export class BaccaratPage {
     if (this.prediction === this.resultSide) {
       this.outcome = 'win';
 
-      this.resultMessage =
-        `¡Acertaste! El resultado fue ${this.resultLabel}.`;
-
+      this.resultMessage = `¡Acertaste! El resultado fue ${this.resultLabel}.`;
     } else if (this.resultSide === 'tie') {
       this.outcome = 'draw';
 
-      this.resultMessage =
-        'La ronda terminó en empate. Tu predicción no coincidió.';
-
+      this.resultMessage = 'La ronda terminó en empate. Tu predicción no coincidió.';
     } else {
       this.outcome = 'loss';
 
-      this.resultMessage =
-        `El resultado fue ${this.resultLabel}. Esta vez no acertaste.`;
+      this.resultMessage = `El resultado fue ${this.resultLabel}. Esta vez no acertaste.`;
     }
 
     const user = this.authService.currentUser;
@@ -335,8 +289,7 @@ export class BaccaratPage {
 
     this.hasPlayed = false;
 
-    this.resultMessage =
-      'Selecciona una nueva predicción para comenzar.';
+    this.resultMessage = 'Selecciona una nueva predicción para comenzar.';
   }
 
   public goToDashboard(): void {

@@ -1,4 +1,3 @@
-
 export interface LegalConsent {
   userId: string;
   termsVersion: string;

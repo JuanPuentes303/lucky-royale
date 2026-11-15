@@ -1,5 +1,4 @@
-
-import { GameId, GameOutcome } from './game.interface';
+import type { GameId, GameOutcome } from './game.interface';
 
 export interface GameHistoryEntry {
   id: string;

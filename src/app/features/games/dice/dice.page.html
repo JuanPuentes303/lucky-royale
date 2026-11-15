@@ -1,12 +1,7 @@
-
 <ion-content class="casino-content">
-
   <main class="dice-container">
-
     <header class="game-header">
-      <ion-button fill="clear" color="primary" (click)="goToDashboard()">
-        ← Volver al menú
-      </ion-button>
+      <ion-button fill="clear" color="primary" (click)="goToDashboard()"> ← Volver al menú </ion-button>
 
       <span class="eyebrow">LUCKY ROYALE ORIGINAL</span>
       <h1>THE DICE TABLE</h1>
@@ -15,7 +10,6 @@
 
     <ion-card class="dice-table">
       <ion-card-content>
-
         <div class="table-decoration">
           <span>♠</span>
           <span>♦</span>
@@ -26,7 +20,6 @@
         <h2>LANZAMIENTO</h2>
 
         <div class="dice-area" [class.rolling]="isRolling">
-
           <div class="die">
             <span>{{ diceOne }}</span>
           </div>
@@ -34,7 +27,6 @@
           <div class="die">
             <span>{{ diceTwo }}</span>
           </div>
-
         </div>
 
         <div class="total-display">
@@ -43,11 +35,9 @@
         </div>
 
         <div class="prediction-section">
-
           <h3>¿Cuál será el resultado?</h3>
 
           <div class="prediction-buttons">
-
             <button
               type="button"
               class="prediction-button"
@@ -69,9 +59,7 @@
               <strong>ALTA</strong>
               <span>8 - 12</span>
             </button>
-
           </div>
-
         </div>
 
         <div
@@ -85,40 +73,22 @@
 
         @if (!hasPlayed) {
 
-          <ion-button
-            expand="block"
-            class="roll-button"
-            [disabled]="!selectedChoice || isRolling"
-            (click)="rollDice()"
-          >
-            {{ isRolling ? 'LANZANDO...' : 'LANZAR DADOS' }}
-          </ion-button>
+        <ion-button expand="block" class="roll-button" [disabled]="!selectedChoice || isRolling" (click)="rollDice()">
+          {{ isRolling ? 'LANZANDO...' : 'LANZAR DADOS' }}
+        </ion-button>
 
         } @else {
 
-          <ion-button
-            expand="block"
-            class="roll-button"
-            (click)="playAgain()"
-          >
-            VOLVER A JUGAR
-          </ion-button>
+        <ion-button expand="block" class="roll-button" (click)="playAgain()"> VOLVER A JUGAR </ion-button>
 
         }
 
         <p class="game-instructions">
-          Acertar una suma de 8 a 12 significa alta.
-          Una suma de 2 a 6 significa baja.
-          El resultado 7 siempre es empate.
+          Acertar una suma de 8 a 12 significa alta. Una suma de 2 a 6 significa baja. El resultado 7 siempre es empate.
         </p>
-
       </ion-card-content>
     </ion-card>
 
-    <footer class="game-footer">
-      LUCKY ROYALE · DICE TABLE
-    </footer>
-
+    <footer class="game-footer">LUCKY ROYALE · DICE TABLE</footer>
   </main>
-
 </ion-content>

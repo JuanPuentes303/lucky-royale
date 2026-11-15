@@ -1,13 +1,6 @@
-
 import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
-
-import {
-  IonButton,
-  IonCard,
-  IonCardContent,
-  IonContent,
-} from '@ionic/angular';
+import { IonButton, IonCard, IonCardContent, IonContent } from '@ionic/angular';
 
 import { AuthService } from '../../../core/services/auth.service';
 import { StatisticsService } from '../../../core/services/statistics.service';
@@ -28,12 +21,7 @@ interface RouletteNumber {
   standalone: true,
   templateUrl: './roulette.page.html',
   styleUrl: './roulette.page.scss',
-  imports: [
-    IonContent,
-    IonButton,
-    IonCard,
-    IonCardContent,
-  ],
+  imports: [IonContent, IonButton, IonCard, IonCardContent],
 })
 export class RoulettePage {
   private readonly authService = inject(AuthService);
@@ -43,23 +31,17 @@ export class RoulettePage {
   private currentRoundId: string | null = null;
 
   private readonly wheelSequence = [
-    0, 32, 15, 19, 4, 21, 2, 25, 17, 34,
-    6, 27, 13, 36, 11, 30, 8, 23, 10, 5,
-    24, 16, 33, 1, 20, 14, 31, 9, 22, 18,
-    29, 7, 28, 12, 35, 3, 26,
+    0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29,
+    7, 28, 12, 35, 3, 26,
   ];
 
-  private readonly redNumbers = new Set([
-    1, 3, 5, 7, 9, 12, 14, 16, 18,
-    19, 21, 23, 25, 27, 30, 32, 34, 36,
-  ]);
+  private readonly redNumbers = new Set([1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]);
 
-  public readonly wheelNumbers: RouletteNumber[] =
-    this.wheelSequence.map((value, index) => ({
-      value,
-      color: this.getNumberColor(value),
-      angle: (index * 360) / 37,
-    }));
+  public readonly wheelNumbers: RouletteNumber[] = this.wheelSequence.map((value, index) => ({
+    value,
+    color: this.getNumberColor(value),
+    angle: (index * 360) / 37,
+  }));
 
   public readonly wheelBackground = this.createWheelBackground();
 
@@ -107,12 +89,7 @@ export class RoulettePage {
 
       const color = this.getNumberColor(number);
 
-      const backgroundColor =
-        color === 'green'
-          ? '#18834e'
-          : color === 'red'
-            ? '#b83238'
-            : '#171a18';
+      const backgroundColor = color === 'green' ? '#18834e' : color === 'red' ? '#b83238' : '#171a18';
 
       return `${backgroundColor} ${start}deg ${end}deg`;
     });
@@ -120,10 +97,7 @@ export class RoulettePage {
     return `conic-gradient(from 0deg, ${segments.join(', ')})`;
   }
 
-  public selectPrediction(
-    type: PredictionType,
-    value: PredictionValue,
-  ): void {
+  public selectPrediction(type: PredictionType, value: PredictionValue): void {
     if (this.isSpinning) {
       return;
     }
@@ -141,11 +115,7 @@ export class RoulettePage {
     const target = event.target as HTMLInputElement;
     const value = Number(target.value);
 
-    if (
-      !Number.isInteger(value) ||
-      value < 0 ||
-      value > 36
-    ) {
+    if (!Number.isInteger(value) || value < 0 || value > 36) {
       return;
     }
 
@@ -153,26 +123,16 @@ export class RoulettePage {
   }
 
   public selectNumber(): void {
-    if (
-      !Number.isInteger(this.numberInput) ||
-      this.numberInput < 0 ||
-      this.numberInput > 36
-    ) {
+    if (!Number.isInteger(this.numberInput) || this.numberInput < 0 || this.numberInput > 36) {
       return;
     }
 
     this.selectPrediction('number', this.numberInput);
   }
 
-  
-
   public async spinRoulette(): Promise<void> {
-    if (
-        this.selectedType === null ||
-        this.selectedValue === null ||
-        this.isSpinning
-    ) {
-        return;
+    if (this.selectedType === null || this.selectedValue === null || this.isSpinning) {
+      return;
     }
 
     this.currentRoundId = crypto.randomUUID();
@@ -188,74 +148,58 @@ export class RoulettePage {
     const winningNumber = this.wheelSequence[resultIndex];
     const winningColor = this.getNumberColor(winningNumber);
 
-    const segmentCenter =
-        (resultIndex * 360) / 37 + 180 / 37;
+    const segmentCenter = (resultIndex * 360) / 37 + 180 / 37;
 
     const currentAngle = this.rotationDegrees % 360;
 
-    const alignment =
-        (360 - ((currentAngle + segmentCenter) % 360)) % 360;
+    const alignment = (360 - ((currentAngle + segmentCenter) % 360)) % 360;
 
-    const targetRotation =
-        this.rotationDegrees + 5 * 360 + alignment;
+    const targetRotation = this.rotationDegrees + 5 * 360 + alignment;
 
     try {
-        // Esperar dos cuadros para permitir el renderizado inicial.
-        await new Promise<void>(resolve =>
-        requestAnimationFrame(() => resolve()),
-        );
+      // Esperar dos cuadros para permitir el renderizado inicial.
+      await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
-        await new Promise<void>(resolve =>
-        requestAnimationFrame(() => resolve()),
-        );
+      await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
-        // Iniciar la transición CSS.
-        this.rotationDegrees = targetRotation;
-        this.changeDetector.detectChanges();
+      // Iniciar la transición CSS.
+      this.rotationDegrees = targetRotation;
+      this.changeDetector.detectChanges();
 
-        // Esperar a que termine el giro.
-        await new Promise(resolve => setTimeout(resolve, 4700));
+      // Esperar a que termine el giro.
+      await new Promise((resolve) => setTimeout(resolve, 4700));
 
-        this.resultNumber = winningNumber;
-        this.resultColor = winningColor;
+      this.resultNumber = winningNumber;
+      this.resultColor = winningColor;
 
-        const won = this.checkPrediction(
-        winningNumber,
-        winningColor,
-        );
+      const won = this.checkPrediction(winningNumber, winningColor);
 
-        this.outcome = won ? 'win' : 'loss';
+      this.outcome = won ? 'win' : 'loss';
 
-        this.resultMessage = won
+      this.resultMessage = won
         ? '¡Excelente! Acertaste tu predicción.'
         : 'Esta vez no acertaste. ¡Inténtalo nuevamente!';
 
-        this.hasPlayed = true;
+      this.hasPlayed = true;
 
-        const user = this.authService.currentUser;
+      const user = this.authService.currentUser;
 
-        if (user) {
-          this.statisticsService.recordResult(
-            user.id,
-            'roulette',
-            this.outcome,
-            `Resultado: ${winningNumber} ${winningColor}. Predicción: ${this.selectedValue}.`,
-            this.currentRoundId ?? undefined,
-          );
-        }
-
+      if (user) {
+        this.statisticsService.recordResult(
+          user.id,
+          'roulette',
+          this.outcome,
+          `Resultado: ${winningNumber} ${winningColor}. Predicción: ${this.selectedValue}.`,
+          this.currentRoundId ?? undefined,
+        );
+      }
     } finally {
-        this.isSpinning = false;
-        this.changeDetector.detectChanges();
+      this.isSpinning = false;
+      this.changeDetector.detectChanges();
     }
-    }
+  }
 
-
-
-  private checkPrediction(
-    number: number,
-    color: RouletteColor,
-  ): boolean {
+  private checkPrediction(number: number, color: RouletteColor): boolean {
     if (this.selectedType === 'number') {
       return number === this.selectedValue;
     }
@@ -269,9 +213,7 @@ export class RoulettePage {
         return false;
       }
 
-      return this.selectedValue === 'even'
-        ? number % 2 === 0
-        : number % 2 !== 0;
+      return this.selectedValue === 'even' ? number % 2 === 0 : number % 2 !== 0;
     }
 
     return false;
