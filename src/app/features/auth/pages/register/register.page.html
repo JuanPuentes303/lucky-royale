@@ -1,0 +1,74 @@
+<ion-content class="casino-content">
+  <main class="auth-container">
+    <section class="auth-brand">
+      <span class="brand-symbol">♠ ♥ ♦ ♣</span>
+      <h1>LUCKY ROYALE</h1>
+      <p>Únete a nuestra comunidad</p>
+    </section>
+
+    <ion-card class="auth-card">
+      <ion-card-content>
+        <h2>Crear cuenta</h2>
+        <p class="subtitle">Completa tus datos para comenzar.</p>
+
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+          <ion-item>
+            <ion-label position="stacked">Nombre</ion-label>
+            <ion-input type="text" formControlName="name" placeholder="Tu nombre" autocomplete="name" />
+          </ion-item>
+
+          @if (registerForm.controls.name.touched && registerForm.controls.name.invalid) {
+          <ion-note color="danger"> El nombre debe tener al menos 3 caracteres. </ion-note>
+          }
+
+          <ion-item>
+            <ion-label position="stacked">Correo electrónico</ion-label>
+            <ion-input type="email" formControlName="email" placeholder="correo@ejemplo.com" autocomplete="email" />
+          </ion-item>
+
+          @if (registerForm.controls.email.touched && registerForm.controls.email.invalid) {
+          <ion-note color="danger"> Ingresa un correo válido. </ion-note>
+          }
+
+          <ion-item>
+            <ion-label position="stacked">Contraseña</ion-label>
+            <ion-input
+              type="password"
+              formControlName="password"
+              placeholder="Mínimo 8 caracteres"
+              autocomplete="new-password"
+            />
+          </ion-item>
+
+          @if (registerForm.controls.password.touched && registerForm.controls.password.invalid) {
+          <ion-note color="danger"> La contraseña debe tener al menos 8 caracteres. </ion-note>
+          }
+
+          <ion-item>
+            <ion-label position="stacked">Confirmar contraseña</ion-label>
+            <ion-input
+              type="password"
+              formControlName="confirmPassword"
+              placeholder="Repite tu contraseña"
+              autocomplete="new-password"
+            />
+          </ion-item>
+
+          @if (errorMessage) {
+          <p class="error-message">{{ errorMessage }}</p>
+          }
+
+          <ion-button type="submit" expand="block" [disabled]="isLoading">
+            {{ isLoading ? 'Creando cuenta...' : 'Crear cuenta' }}
+          </ion-button>
+        </form>
+
+        <p class="auth-footer">
+          ¿Ya tienes cuenta?
+          <a routerLink="/auth/login">Iniciar sesión</a>
+        </p>
+      </ion-card-content>
+    </ion-card>
+  </main>
+  <app-legal-consent-modal [isOpen]="showLegalModal" (accepted)="onLegalAccepted()" (dismissed)="onLegalDismissed()" />
+</ion-content>

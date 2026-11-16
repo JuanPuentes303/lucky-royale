@@ -1,0 +1,301 @@
+
+.blackjack-container {
+  max-width: 850px;
+  margin: auto;
+  padding: 18px;
+}
+
+.game-header {
+  text-align: center;
+  padding: 20px 0 25px;
+
+  ion-button {
+    display: flex;
+    margin-right: auto;
+  }
+
+  .eyebrow {
+    color: #d8b96f;
+    font-size: .75rem;
+    font-weight: 800;
+    letter-spacing: 3px;
+  }
+
+  h1 {
+    color: #f0d496;
+    font-size: clamp(1.8rem, 5vw, 2.7rem);
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin: 12px 0;
+  }
+
+  p {
+    color: #bdcec2;
+  }
+}
+
+.blackjack-table {
+  --background: linear-gradient(145deg, #19432e, #0d2419);
+
+  max-width: 700px;
+  margin: auto;
+  border: 2px solid #a8894d;
+  border-radius: 25px;
+
+  box-shadow: 0 20px 50px rgba(0, 0, 0, .35);
+
+  ion-card-content {
+    padding: clamp(18px, 4vw, 32px);
+  }
+}
+
+.table-decoration {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  color: #e5c579;
+  font-size: 1.5rem;
+  margin-bottom: 25px;
+}
+
+.hand-section {
+  padding: 15px 0;
+}
+
+.hand-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+
+  h2 {
+    color: #f0d496;
+    font-size: .95rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin: 0;
+  }
+}
+
+.hand-score {
+  color: #e5c579;
+  font-size: .75rem;
+  font-weight: 800;
+}
+
+.cards-container {
+  min-height: 125px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px;
+}
+
+.playing-card {
+  width: 76px;
+  height: 108px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+
+  border: 2px solid #e1dfd2;
+  border-radius: 10px;
+
+  background: linear-gradient(145deg, #ffffff, #e5e7df);
+
+  color: #171b18;
+
+  box-shadow: 0 5px 12px rgba(0, 0, 0, .3);
+
+  animation: card-appear .3s ease-out;
+
+  .card-rank {
+    font-size: 1.6rem;
+    font-weight: 900;
+  }
+
+  .card-suit {
+    font-size: 2rem;
+    line-height: 1;
+  }
+
+  &.red-card {
+    color: #c32e3c;
+  }
+}
+
+.card-back {
+  border: 3px solid #d8b96f;
+  background: repeating-linear-gradient(
+    45deg,
+    #173c2a,
+    #173c2a 6px,
+    #24573c 6px,
+    #24573c 12px
+  );
+
+  color: #e5c579;
+
+  span {
+    font-size: 2rem;
+  }
+
+  strong {
+    letter-spacing: 3px;
+  }
+}
+
+@keyframes card-appear {
+  from {
+    opacity: 0;
+    transform: translateY(-15px) rotate(-5deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0);
+  }
+}
+
+.table-divider {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 20px 0;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(229, 197, 121, .35);
+  }
+
+  span {
+    color: #d8b96f;
+    font-size: .7rem;
+    font-weight: 900;
+    letter-spacing: 3px;
+  }
+}
+
+.result-panel {
+  min-height: 60px;
+  display: grid;
+  place-items: center;
+
+  padding: 15px;
+  margin: 20px 0;
+
+  border: 1px solid #48604b;
+  border-radius: 12px;
+  background: rgba(5, 20, 12, .45);
+
+  color: #f4f5ef;
+  font-weight: 750;
+  text-align: center;
+  line-height: 1.5;
+
+  &.win {
+    color: #7ce3b5;
+    border-color: #57a87e;
+  }
+
+  &.loss {
+    color: #ff9ca3;
+    border-color: #a6535b;
+  }
+
+  &.draw {
+    color: #f0d496;
+    border-color: #a8894d;
+  }
+}
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.action-button,
+.stand-button {
+  --border-radius: 12px;
+  min-height: 52px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.action-button {
+  --background: #e5c579;
+  --color: #102016;
+}
+
+.stand-button {
+  --background: #263b30;
+  --color: #f0d496;
+  --border-color: #a8894d;
+  --border-style: solid;
+  --border-width: 1px;
+}
+
+.rules-panel {
+  margin-top: 30px;
+  padding: 18px;
+  border: 1px solid rgba(229, 197, 121, .25);
+  border-radius: 14px;
+  background: rgba(5, 20, 12, .35);
+
+  h3 {
+    color: #d8b96f;
+    font-size: .8rem;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+  }
+
+  p {
+    color: #bdcec2;
+    font-size: .8rem;
+    line-height: 1.6;
+    margin: 8px 0;
+  }
+}
+
+.game-footer {
+  text-align: center;
+  color: #9caf9f;
+  letter-spacing: 3px;
+  font-size: .7rem;
+  margin: 30px 0;
+}
+
+@media (max-width: 450px) {
+  .blackjack-container {
+    padding: 10px;
+  }
+
+  .playing-card {
+    width: 62px;
+    height: 92px;
+  }
+
+  .cards-container {
+    gap: 8px;
+  }
+
+  .hand-score {
+    font-size: .65rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .playing-card {
+    animation: none;
+  }
+}

@@ -1,0 +1,52 @@
+<ion-content class="casino-content">
+  <main class="auth-container">
+    <section class="auth-brand">
+      <span class="brand-symbol">♠ ♥ ♦ ♣</span>
+      <h1>LUCKY ROYALE</h1>
+      <p>La diversión comienza aquí</p>
+    </section>
+
+    <ion-card class="auth-card">
+      <ion-card-content>
+        <h2>Bienvenido de nuevo</h2>
+        <p class="subtitle">Ingresa a tu cuenta para continuar.</p>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <ion-item>
+            <ion-label position="stacked">Correo electrónico</ion-label>
+            <ion-input type="email" formControlName="email" placeholder="correo@ejemplo.com" autocomplete="email" />
+          </ion-item>
+
+          @if (loginForm.controls.email.touched && loginForm.controls.email.invalid) {
+          <ion-note color="danger"> Ingresa un correo electrónico válido. </ion-note>
+          }
+
+          <ion-item>
+            <ion-label position="stacked">Contraseña</ion-label>
+            <ion-input
+              type="password"
+              formControlName="password"
+              placeholder="Tu contraseña"
+              autocomplete="current-password"
+            />
+          </ion-item>
+
+          @if (loginForm.controls.password.touched && loginForm.controls.password.invalid) {
+          <ion-note color="danger"> La contraseña es obligatoria. </ion-note>
+          } @if (errorMessage) {
+          <p class="error-message">{{ errorMessage }}</p>
+          }
+
+          <ion-button type="submit" expand="block" [disabled]="isLoading">
+            {{ isLoading ? 'Ingresando...' : 'Iniciar sesión' }}
+          </ion-button>
+        </form>
+
+        <p class="auth-footer">
+          ¿Todavía no tienes cuenta?
+          <a routerLink="/auth/register">Crear cuenta</a>
+        </p>
+      </ion-card-content>
+    </ion-card>
+  </main>
+</ion-content>

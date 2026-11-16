@@ -1,0 +1,119 @@
+<ion-content class="casino-content">
+  <main class="blackjack-container">
+    <header class="game-header">
+      <ion-button fill="clear" color="primary" (click)="goToDashboard()"> ← Volver al menú </ion-button>
+
+      <span class="eyebrow">LUCKY ROYALE ORIGINAL</span>
+
+      <h1>ROYAL BLACKJACK</h1>
+
+      <p>Acércate a 21 sin pasarte.</p>
+    </header>
+
+    <ion-card class="blackjack-table">
+      <ion-card-content>
+        <div class="table-decoration">
+          <span>♠</span>
+          <span>♦</span>
+          <span>♣</span>
+          <span>♥</span>
+        </div>
+
+        <!-- CRUPIER -->
+        <section class="hand-section">
+          <div class="hand-header">
+            <h2>CRUPIER</h2>
+
+            <span class="hand-score">
+              {{ dealerRevealed ? dealerTotal : visibleDealerTotal }} {{ dealerRevealed ? 'PUNTOS' : 'PUNTOS VISIBLES'
+              }}
+            </span>
+          </div>
+
+          <div class="cards-container">
+            @for (card of dealerCards; track $index) { @if ($index === 1 && !dealerRevealed) {
+
+            <div class="playing-card card-back">
+              <span>♛</span>
+              <strong>LR</strong>
+            </div>
+
+            } @else {
+
+            <div class="playing-card" [class.red-card]="card.suit === '♥' || card.suit === '♦'">
+              <span class="card-rank">{{ card.rank }}</span>
+              <span class="card-suit">{{ card.suit }}</span>
+            </div>
+
+            } }
+          </div>
+        </section>
+
+        <div class="table-divider">
+          <span>LUCKY ROYALE</span>
+        </div>
+
+        <!-- JUGADOR -->
+        <section class="hand-section">
+          <div class="hand-header">
+            <h2>TU MANO</h2>
+
+            <span class="hand-score"> {{ playerTotal }} PUNTOS </span>
+          </div>
+
+          <div class="cards-container">
+            @for (card of playerCards; track $index) {
+
+            <div class="playing-card" [class.red-card]="card.suit === '♥' || card.suit === '♦'">
+              <span class="card-rank">{{ card.rank }}</span>
+              <span class="card-suit">{{ card.suit }}</span>
+            </div>
+
+            }
+          </div>
+        </section>
+
+        <!-- RESULTADO -->
+        <div
+          class="result-panel"
+          [class.win]="outcome === 'win'"
+          [class.loss]="outcome === 'loss'"
+          [class.draw]="outcome === 'draw'"
+        >
+          {{ resultMessage }}
+        </div>
+
+        <!-- ACCIONES -->
+        @if (!isRoundActive && !hasPlayed) {
+
+        <ion-button expand="block" class="action-button" (click)="startGame()"> REPARTIR CARTAS </ion-button>
+
+        } @else if (isRoundActive) {
+
+        <div class="actions-grid">
+          <ion-button expand="block" class="action-button" (click)="hit()"> PEDIR CARTA </ion-button>
+
+          <ion-button expand="block" class="stand-button" (click)="stand()"> PLANTARSE </ion-button>
+        </div>
+
+        } @else {
+
+        <ion-button expand="block" class="action-button" (click)="playAgain()"> VOLVER A JUGAR </ion-button>
+
+        }
+
+        <div class="rules-panel">
+          <h3>REGLAS DEL JUEGO</h3>
+
+          <p>Las cartas numéricas conservan su valor.</p>
+          <p>J, Q y K valen 10 puntos.</p>
+          <p>El as vale 11 o 1 según la mano.</p>
+          <p>El crupier se planta al alcanzar 17 puntos.</p>
+          <p>El objetivo es acercarse a 21 sin superarlo.</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <footer class="game-footer">LUCKY ROYALE · ROYAL BLACKJACK</footer>
+  </main>
+</ion-content>

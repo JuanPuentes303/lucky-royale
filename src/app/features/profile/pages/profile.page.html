@@ -1,0 +1,145 @@
+<ion-content class="casino-content">
+  <main class="profile-container">
+    <!-- ENCABEZADO -->
+    <header class="profile-header">
+      <ion-button fill="clear" color="primary" (click)="goToDashboard()"> ← Volver al menú </ion-button>
+
+      <span class="eyebrow">LUCKY ROYALE</span>
+      <h1>Mi perfil</h1>
+
+      <p>Consulta tu actividad y rendimiento en los juegos.</p>
+    </header>
+
+    <!-- INFORMACIÓN DEL USUARIO -->
+    <ion-card class="user-card">
+      <ion-card-content>
+        <div class="user-information">
+          <div class="avatar">{{ userName.charAt(0).toUpperCase() }}</div>
+
+          <div class="user-details">
+            <h2>{{ userName }}</h2>
+            <p>{{ userEmail }}</p>
+            <span> Miembro desde {{ createdAt | date:'dd/MM/yyyy' }} </span>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- RESUMEN GENERAL -->
+    <section class="statistics-section">
+      <span class="eyebrow">RESUMEN GENERAL</span>
+      <h2>Mis estadísticas</h2>
+
+      <div class="summary-grid">
+        <article class="metric">
+          <span class="metric-icon">🎮</span>
+          <strong>{{ totalGames }}</strong>
+          <span>Partidas</span>
+        </article>
+
+        <article class="metric">
+          <span class="metric-icon">🏆</span>
+          <strong>{{ totalWins }}</strong>
+          <span>Victorias</span>
+        </article>
+
+        <article class="metric">
+          <span class="metric-icon">✕</span>
+          <strong>{{ totalLosses }}</strong>
+          <span>Derrotas</span>
+        </article>
+
+        <article class="metric">
+          <span class="metric-icon">＝</span>
+          <strong>{{ totalDraws }}</strong>
+          <span>Empates</span>
+        </article>
+      </div>
+    </section>
+
+    <!-- ESTADÍSTICAS POR JUEGO -->
+    <section class="statistics-section">
+      <span class="eyebrow">RENDIMIENTO</span>
+      <h2>Estadísticas por juego</h2>
+
+      <ion-card class="data-card">
+        <ion-card-content>
+          @for (stat of statistics; track stat.gameId) {
+
+          <div class="game-stat">
+            <div class="game-stat-heading">
+              <strong>{{ getGameName(stat.gameId) }}</strong>
+              <span>{{ stat.gamesPlayed }} partidas</span>
+            </div>
+
+            <div class="progress-track">
+              <div class="progress-fill" [style.width.%]="getWinPercentage(stat)"></div>
+            </div>
+
+            <div class="game-stat-details">
+              <span>Victorias: {{ stat.wins }}</span>
+              <span>Derrotas: {{ stat.losses }}</span>
+              <span>Empates: {{ stat.draws }}</span>
+              <span>{{ getWinPercentage(stat) }}% de victorias</span>
+            </div>
+          </div>
+
+          }
+        </ion-card-content>
+      </ion-card>
+    </section>
+
+    <!-- HISTORIAL -->
+    <section class="statistics-section">
+      <span class="eyebrow">ACTIVIDAD RECIENTE</span>
+      <h2>Historial de partidas</h2>
+
+      <ion-card class="data-card">
+        <ion-card-content>
+          @if (history.length === 0) {
+
+          <div class="empty-history">
+            <span>♛</span>
+            <h3>Aún no tienes partidas</h3>
+            <p>Cuando comiences a jugar, tus resultados aparecerán aquí.</p>
+          </div>
+
+          } @else { @for (entry of history; track entry.id) {
+
+          <div class="history-item">
+            <div class="history-information">
+              <strong>{{ getGameName(entry.gameId) }}</strong>
+
+              <span> {{ entry.playedAt | date:'dd/MM/yyyy HH:mm' }} </span>
+
+              @if (entry.details) {
+              <small>{{ entry.details }}</small>
+              }
+            </div>
+
+            <ion-chip
+              [color]="
+                    entry.outcome === 'win'
+                      ? 'success'
+                      : entry.outcome === 'loss'
+                        ? 'danger'
+                        : 'warning'
+                  "
+            >
+              {{ entry.outcome === 'win' ? 'Victoria' : entry.outcome === 'loss' ? 'Derrota' : 'Empate' }}
+            </ion-chip>
+          </div>
+
+          } }
+        </ion-card-content>
+      </ion-card>
+    </section>
+
+    <!-- CERRAR SESIÓN -->
+    <footer class="profile-footer">
+      <ion-button expand="block" fill="outline" color="primary" (click)="logout()"> Cerrar sesión </ion-button>
+
+      <p>Lucky Royale · Entretenimiento recreativo</p>
+    </footer>
+  </main>
+</ion-content>
